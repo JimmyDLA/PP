@@ -14,7 +14,6 @@ import { style } from './HomeScreen.style'
 class HomeScreen extends React.Component {
 
   handleSetGame = () => {
-    debugger
     const { setGame } = this.props;
     setGame(true);
   }
@@ -23,7 +22,7 @@ class HomeScreen extends React.Component {
     return (
       <View style={style.container}>
         <View style={style.logoContainer}>
-          <Text style={style.title}>Percision</Text>
+          <Text style={style.title}>FIGRD</Text>
           <View style={style.logo}>
             <Text style={style.title}>LOGO</Text>
           </View>

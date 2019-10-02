@@ -12,7 +12,6 @@ export const home = (state = initialState, action) => {
 
   switch (type) {
     case SET_GAME:
-      debugger
       return { ...state, ready: data };
 
     default:
@@ -21,7 +20,4 @@ export const home = (state = initialState, action) => {
 };
 
 // Action creators
-export const setGame = data =>{
-  debugger;
-  return { type: SET_GAME, data };
-} 
+export const setGame = data =>({ type: SET_GAME, data});

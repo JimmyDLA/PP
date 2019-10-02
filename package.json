@@ -10,7 +10,9 @@
     "lint-fix": "eslint --fix .",
     "lint-check": "eslint .",
     "rename": "react-native-rename",
-    "postinstall": "npx jetify"
+    "postinstall": "npx jetify",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android"
   },
   "dependencies": {
     "axios": "^0.19.0",

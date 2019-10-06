@@ -14,6 +14,9 @@ export const style = StyleSheet.create({
     width: '100%',
     borderColor: 'pink',
     borderWidth: 2,
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     // backgroundColor: 'pink',
   },
   selectionContainer: { 
@@ -23,6 +26,7 @@ export const style = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'space-around',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     // backgroundColor: 'teal',
   },
   statsContainer: { 

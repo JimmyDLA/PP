@@ -1,6 +1,9 @@
-import squareImg from 'App/Assets/Images/square.png'
-import circleImg from 'App/Assets/Images/circle.png'
-import starImg from 'App/Assets/Images/star.png'
+import squareImg from 'App/Assets/Images/square.png';
+import circleImg from 'App/Assets/Images/circle.png';
+import starImg from 'App/Assets/Images/star.png';
+import squareHiddenImg from 'App/Assets/Images/squareHidden.png'
+import circleHiddenImg from 'App/Assets/Images/circleHidden.png'
+import starHiddenImg from 'App/Assets/Images/starHidden.png'
 
 
 class Shape {
@@ -16,11 +19,91 @@ class Shape {
 };
 
 export const getShapes = () => {
-  const name = ['square', 'circle', 'star'];
-  const shapeImgs = [squareImg, circleImg, starImg];
+  const name = [
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+    'circle', 
+    'star',
+    'square', 
+  ];
+  const shapeImgs = [
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+    circleImg, 
+    starImg,
+    squareImg, 
+  ];
+
+  const shapeHiddenImgs = [
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+    circleHiddenImg, 
+    starHiddenImg,
+    squareHiddenImg, 
+  ];
   const shapesArr = [];
-  for (let i = 0; i < 3 ; i++) {
-    const item = new Shape(i, name[i], shapeImgs[i], shapeImgs[i]);
+  for (let i = 0; i < name.length ; i++) {
+    const item = new Shape(i, name[i], shapeImgs[i], shapeHiddenImgs[i]);
     shapesArr.push(item);
   }
 

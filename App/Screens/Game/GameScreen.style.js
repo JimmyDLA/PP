@@ -1,6 +1,8 @@
 import { StyleSheet } from 'react-native'
 import Fonts from 'App/Theme/Fonts'
 import ApplicationStyles from 'App/Theme/ApplicationStyles'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+
 
 export const style = StyleSheet.create({
   container: { 
@@ -12,36 +14,35 @@ export const style = StyleSheet.create({
   matrixContainer: { 
     height: '42%',
     width: '100%',
-    borderColor: 'pink',
-    borderWidth: 2,
-    justifyContent: 'space-around',
+  },
+  innerMatrix: {
+    padding: 5, 
+    height: '100%', 
+    width: '100%', 
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // backgroundColor: 'pink',
+    justifyContent: 'space-around',
+
   },
   selectionContainer: { 
     height: '42%',
     width: '100%',
-    borderColor: 'teal',
-    borderWidth: 2,
     justifyContent: 'space-around',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    // backgroundColor: 'teal',
   },
   statsContainer: { 
     height: '12%',
     width: '100%',
     borderColor: 'yellow',
     borderWidth: 2,
-    // backgroundColor: 'yellow',
   },
   backgroundImage: { 
     height: '100%',
     width: '100%',
   },
   shapeImg: { 
-    height: 40,
-    width: 40
+    height: wp(8) ,
+    width: wp(8)
   },
 })

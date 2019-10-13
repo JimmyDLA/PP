@@ -10,9 +10,11 @@ import {
   PanResponder,
   Image,
   findNodeHandle,
+  Dimensions,
 } from 'react-native'
 import starImg from 'App/Assets/Images/star.png'
 import matrixImg from 'App/Assets/Images/matrix_bkgd.png';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { connect } from 'react-redux'
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
@@ -28,6 +30,8 @@ class GameScreen extends React.Component {
       isGrabbing: false,
       currentShape: {},
       currentMatrix: {},
+      height: Dimensions.get('window').height,
+      width: Dimensions.get('window').width,
     };
 
     this._panResponder = PanResponder.create({
@@ -51,6 +55,7 @@ class GameScreen extends React.Component {
       onPanResponderMove: (evt, gestureState) => {
         Animated.event([{ y: this.point.y }])({ y: gestureState.moveY - 21 })
         Animated.event([{ x: this.point.x }])({ x: gestureState.moveX - 21 })
+        console.log('x = ', gestureState.moveX, ' y = ', gestureState.moveY);
         // The most recent move distance is gestureState.move{X,Y}
         // The accumulated gesture distance since becoming responder is
         // gestureState.d{x,y}
@@ -91,14 +96,21 @@ class GameScreen extends React.Component {
   }
 
   render() {
-    const { shapesArr, isGrabbing, currentShape } = this.state;
-    const renderShape = ( shape, i, hidden ) => (
+    const { shapesArr, isGrabbing, currentShape, width } = this.state;
+    const renderShape = ( shape, i, hidden ) => !hidden ? (
       <Image 
         key={`${shape.name}${i}`} 
         style={style.shapeImg} 
         source={!hidden ? shape.activeImg : shape.inactiveImg} 
         shape={shape}
         {...this._panResponder.panHandlers}
+      />
+    ) : (
+      <Image 
+        key={`${shape.name}${i}`} 
+        style={style.shapeImg} 
+        source={!hidden ? shape.activeImg : shape.inactiveImg} 
+        shape={shape}
       />
     );
 
@@ -119,11 +131,14 @@ class GameScreen extends React.Component {
           </Animated.View> 
         )}
         <ImageBackground source={matrixImg} resizeMode="stretch" imageStyle={style.backgroundImage} style={style.matrixContainer}>
-          {shapesArr.map((shape, id) => (
-            <View key={`${shape.name}${id}`} style={{margin: 15, marginBottom: 10}}>
-              {renderShape(shape, shape.id, true)}
-            </View>
-          ))}
+          <View style={style.innerMatrix}>
+            {shapesArr.map((shape, id) => (
+              <View key={`${shape.name}${id}`} style={{ width: wp(18), height: wp(14.4), alignItems: 'center', justifyContent: 'center'}}>
+                {renderShape(shape, shape.id, true)}
+              </View>
+            ))}
+          </View>
+
         </ImageBackground>
         <View style={style.selectionContainer}>
           {shapesArr.map((shape, id) => (

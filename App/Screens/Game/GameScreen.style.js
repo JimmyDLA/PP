@@ -14,14 +14,17 @@ export const style = StyleSheet.create({
   matrixContainer: { 
     height: '42%',
     width: '100%',
+    borderWidth: 5,
+    borderColor: 'black',
   },
   innerMatrix: {
-    padding: 5, 
+    // padding: 5, 
     height: '100%', 
     width: '100%', 
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    alignItems: 'center',
 
   },
   selectionContainer: { 
@@ -42,7 +45,15 @@ export const style = StyleSheet.create({
     width: '100%',
   },
   shapeImg: { 
-    height: wp(8) ,
-    width: wp(8)
+    height: wp(11) ,
+    width: wp(11)
   },
+  shapeContainer: { 
+    height: wp(17.8),
+    width: wp(19.5),
+    borderWidth: 1,
+    borderColor: 'black',
+    alignItems: 'center', 
+    justifyContent: 'center',
+  }
 })

@@ -62,6 +62,7 @@ class GameScreen extends React.Component {
       },
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
+        debugger
         const { currentShape, currentMatrix } = this.state;
         if (currentShape.id !== currentMatrix.id) { 
           this.setState({ isGrabbing: false });
@@ -130,16 +131,16 @@ class GameScreen extends React.Component {
             {renderShape(currentShape, currentShape.id)}
           </Animated.View> 
         )}
-        <ImageBackground source={matrixImg} resizeMode="stretch" imageStyle={style.backgroundImage} style={style.matrixContainer}>
+        <View style={style.matrixContainer}>
           <View style={style.innerMatrix}>
             {shapesArr.map((shape, id) => (
-              <View key={`${shape.name}${id}`} style={{ width: wp(18), height: wp(14.4), alignItems: 'center', justifyContent: 'center'}}>
+              <View key={`${shape.name}${id}`} style={style.shapeContainer}>
                 {renderShape(shape, shape.id, true)}
               </View>
             ))}
           </View>
 
-        </ImageBackground>
+        </View>
         <View style={style.selectionContainer}>
           {shapesArr.map((shape, id) => (
             <View key={`${shape.name}${id}`} style={{margin: 15, marginBottom: 10, opacity: currentShape.id === shape.id ? 0 : 1 }}>

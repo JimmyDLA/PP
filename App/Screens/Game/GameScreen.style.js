@@ -14,7 +14,7 @@ export const style = StyleSheet.create({
   matrixContainer: { 
     height: '42%',
     width: '100%',
-    borderWidth: 5,
+    borderWidth: hp(0.5),
     borderColor: 'black',
   },
   innerMatrix: {
@@ -45,13 +45,18 @@ export const style = StyleSheet.create({
     width: '100%',
   },
   shapeImg: { 
-    height: wp(11) ,
-    width: wp(11)
+    width: '100%',
+  },
+  slopHit: { 
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   shapeContainer: { 
-    height: wp(17.8),
+    height: hp(8.2),
     width: wp(19.5),
-    borderWidth: 1,
+    borderWidth: hp(0.1),
     borderColor: 'black',
     alignItems: 'center', 
     justifyContent: 'center',

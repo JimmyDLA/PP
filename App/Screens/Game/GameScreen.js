@@ -12,6 +12,7 @@ import {
   findNodeHandle,
   Dimensions,
 } from 'react-native'
+import CountDown from 'react-native-countdown-component';
 import starImg from 'App/Assets/Images/star.png'
 import matrixImg from 'App/Assets/Images/matrix_bkgd.png';
 // import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -35,6 +36,7 @@ class GameScreen extends React.Component {
       shapesInfo: [],
       foundShape: [],
       yOffset: 0,
+      score: 0,
     };
 
     this._panResponder = PanResponder.create({
@@ -59,7 +61,6 @@ class GameScreen extends React.Component {
         // gestureState.d{x,y} will be set to zero now
       },
       onPanResponderMove: (evt, gestureState) => {
-        // const { memoizedProps: { style: {width,height} } } = evt._targetInst;
         const { height, width } = this.state.shapesInfo[0];
 
         const { moveX, moveY } = gestureState;
@@ -67,17 +68,21 @@ class GameScreen extends React.Component {
         Animated.event([{ x: this.point.x }])({ x: gestureState.moveX - (width / 2) })
         console.log('x:', moveX, '/y:', moveY )
 
-        // console.log('x = ', gestureState.moveX, ' y = ', gestureState.moveY);
         // The most recent move distance is gestureState.move{X,Y}
         // The accumulated gesture distance since becoming responder is
         // gestureState.d{x,y}
       },
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
-        // console.log('x = ', gestureState.moveX, ' y = ', gestureState.moveY);
-        let { moveX, moveY } = gestureState;
-        //find shape with xy position 
-        const { foundShape, shapesInfo, grabbedShape, yOffset, matrixBorder } = this.state;
+        const { moveX, moveY } = gestureState;
+        const { 
+          foundShape, 
+          shapesInfo, 
+          grabbedShape, 
+          yOffset, 
+          matrixBorder,
+          score,
+        } = this.state;
         shapesInfo.find(shape => {
           if (
             (moveX >= shape.x + matrixBorder) &&
@@ -86,7 +91,11 @@ class GameScreen extends React.Component {
             (moveY <= shape.y + shape.height + yOffset + matrixBorder) &&
             (shape.id === grabbedShape.id)
           ) {
-            return this.setState({ foundShape: [...foundShape, shape.id.toString()] });
+            this.setState({ score: score + 1, foundShape: [...foundShape, shape.id.toString()] });
+              debugger
+            if (foundShape.length === 24) {
+              alert('YOU WON!')
+            }
           }
         })
         // if (grabbedShape.id !== currentMatrix.id) { 
@@ -111,10 +120,6 @@ class GameScreen extends React.Component {
 
   componentDidMount() {
     this.setState({ shapesInMatrix: getShapes(), shapesInSelection: getShapes()})
-  }
-
-  componentWillUnmount() {
-    console.warn('will unmount')
   }
 
   handleOnPress = () => {
@@ -180,6 +185,7 @@ class GameScreen extends React.Component {
       shapesInSelection, 
       isGrabbing, 
       grabbedShape,
+      score,
     } = this.state;
 
     return (
@@ -223,6 +229,23 @@ class GameScreen extends React.Component {
         </View>
         <View style={style.statsContainer}>
           {/* Stats container */}
+          <View style={style.subContainr}>
+            <Text style={style.time}>Time:</Text>
+            <CountDown
+              until={90}
+              onFinish={() => alert('GAME OVER!')}
+              onPress={() => alert('hello')}
+              size={14}
+              digitStyle={{backgroundColor: 'transparent', width: 20}}
+              timeToShow={['M','S']}
+              timeLabels={{}}
+              showSeparator
+            />
+          </View>
+          <View style={style.subContainr}>
+            <Text style={style.time}>Score:</Text>
+            <Text style={style.score}>{score}</Text>
+          </View>
         </View>
       </View>
     )

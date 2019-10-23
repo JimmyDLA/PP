@@ -60,5 +60,21 @@ export const style = StyleSheet.create({
     borderColor: 'black',
     alignItems: 'center', 
     justifyContent: 'center',
-  }
+  },
+  subContainr: { 
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+    width: '30%',
+    paddingLeft: 10,
+  },
+  time: { 
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  score: { 
+    fontSize: 16,
+    fontWeight: '600',
+    paddingLeft: 5,
+  },
 })

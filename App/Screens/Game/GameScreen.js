@@ -13,12 +13,12 @@ import {
   Dimensions,
 } from 'react-native'
 import CountDown from 'react-native-countdown-component';
-import starImg from 'App/Assets/Images/star.png'
+import pauseImg from 'App/Assets/Images/pause.png'
 import matrixImg from 'App/Assets/Images/matrix_bkgd.png';
-// import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { connect } from 'react-redux'
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 class GameScreen extends React.Component {
 
@@ -34,9 +34,13 @@ class GameScreen extends React.Component {
       matrixBorder: 0,
       shapeBorder: 0,
       shapesInfo: [],
-      foundShape: [],
+      shapesFound: [],
+      timeLeft: 0,
       yOffset: 0,
+      paused: false,
       score: 0,
+      won: false,
+
     };
 
     this._panResponder = PanResponder.create({
@@ -66,8 +70,6 @@ class GameScreen extends React.Component {
         const { moveX, moveY } = gestureState;
         Animated.event([{ y: this.point.y }])({ y: gestureState.moveY - (height / 2) })
         Animated.event([{ x: this.point.x }])({ x: gestureState.moveX - (width / 2) })
-        console.log('x:', moveX, '/y:', moveY )
-
         // The most recent move distance is gestureState.move{X,Y}
         // The accumulated gesture distance since becoming responder is
         // gestureState.d{x,y}
@@ -76,7 +78,7 @@ class GameScreen extends React.Component {
       onPanResponderRelease: (evt, gestureState) => {
         const { moveX, moveY } = gestureState;
         const { 
-          foundShape, 
+          shapesFound, 
           shapesInfo, 
           grabbedShape, 
           yOffset, 
@@ -91,14 +93,16 @@ class GameScreen extends React.Component {
             (moveY <= shape.y + shape.height + yOffset + matrixBorder) &&
             (shape.id === grabbedShape.id)
           ) {
-            this.setState({ score: score + 1, foundShape: [...foundShape, shape.id.toString()] });
-              debugger
-            if (foundShape.length === 24) {
-              alert('YOU WON!')
+            this.setState({ score: score + 1, shapesFound: [...shapesFound, shape.id.toString()] });
+            
+            //YOU WON!!
+            if (shapesFound.length === 5) {
+              this.setState({ paused: true, won: true });
+              this.points();
+              alert('YOU WON!');
             }
           }
         })
-        // if (grabbedShape.id !== currentMatrix.id) { 
           this.setState({ isGrabbing: false });
           this.setState({ grabbedShape: {} });
         // }
@@ -122,8 +126,29 @@ class GameScreen extends React.Component {
     this.setState({ shapesInMatrix: getShapes(), shapesInSelection: getShapes()})
   }
 
+  points = () => {
+    const addOne = () => {
+    let { score, timeLeft } = this.state;
+
+      if (timeLeft === 0) {
+        clearInterval(addPoints);
+      } else {
+        this.setState({ score: score + 1 , timeLeft: timeLeft - 1});
+      }
+    }
+    const addPoints = setInterval(addOne, 500);
+  }
+
   handleOnPress = () => {
     console.warn('PRESSED!')
+  }
+
+  handleTime = (e) => {
+    this.setState({ timeLeft: e });
+  }
+
+  handlePause = () => {
+    this.setState({ paused: true });
   }
 
   saveShapeLocation = (e, shape) => {
@@ -143,8 +168,8 @@ class GameScreen extends React.Component {
   }
 
   renderShape = ( shape, i, hidden ) => {
-    const { foundShape } = this.state;
-    const found = foundShape.find(id => id == shape.id);
+    const { shapesFound } = this.state;
+    const found = shapesFound.find(id => id == shape.id);
 
     if (!found && !hidden) {
       return (
@@ -183,9 +208,12 @@ class GameScreen extends React.Component {
     const { 
       shapesInMatrix, 
       shapesInSelection, 
-      isGrabbing, 
       grabbedShape,
+      isGrabbing,
+      timeLeft,
+      paused,
       score,
+      won,
     } = this.state;
 
     return (
@@ -229,22 +257,38 @@ class GameScreen extends React.Component {
         </View>
         <View style={style.statsContainer}>
           {/* Stats container */}
+          <View style={style.column}>
           <View style={style.subContainr}>
             <Text style={style.time}>Time:</Text>
-            <CountDown
-              until={90}
-              onFinish={() => alert('GAME OVER!')}
-              onPress={() => alert('hello')}
-              size={14}
-              digitStyle={{backgroundColor: 'transparent', width: 20}}
-              timeToShow={['M','S']}
-              timeLabels={{}}
-              showSeparator
-            />
+            {won ? (
+              <Text style={style.score}>00 : {timeLeft}</Text>
+            ) : (
+              <CountDown
+                until={25}
+                onFinish={() => alert('GAME OVER!')}
+                onPress={() => alert('hello')}
+                size={14}
+                digitStyle={{backgroundColor: 'transparent', width: 20}}
+                timeToShow={['M','S']}
+                timeLabels={{}}
+                showSeparator
+                running={!paused}
+                onChange={this.handleTime}
+              />
+            )}
+
           </View>
           <View style={style.subContainr}>
             <Text style={style.time}>Score:</Text>
             <Text style={style.score}>{score}</Text>
+          </View>
+          </View>
+          <View style={style.column}>
+            <View style={style.subContainr}>
+              <TouchableHighlight onPress={this.handlePause}>
+                <Image resizeMode="contain" style={style.pause} source={pauseImg} />
+              </TouchableHighlight>
+            </View>
           </View>
         </View>
       </View>

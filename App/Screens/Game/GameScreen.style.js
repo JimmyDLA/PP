@@ -65,7 +65,7 @@ export const style = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
-    width: '30%',
+    width: '100%',
     paddingLeft: 10,
   },
   time: { 
@@ -76,5 +76,11 @@ export const style = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     paddingLeft: 5,
+  },
+  pause: { 
+    width: 10,
+  },
+  column: { 
+    width: '50%'
   },
 })

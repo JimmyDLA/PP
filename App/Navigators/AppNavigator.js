@@ -3,7 +3,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation'
 import SplashScreen from 'App/Screens/SplashScreen/SplashScreen'
 import HomeScreen from 'App/Screens/Home/HomeScreen'
 import GameScreen from 'App/Screens/Game/GameScreen'
-import GameModal from 'App/Screens/Game/components/GameModal'
+import GameModal from 'App/Screens/Game/GameModal'
 
 /**
  * The root screen contains the application's navigation.

@@ -14,8 +14,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { getShapes } from '../../../Helpers/Shapes';
-import { style } from '../GameScreen.style';
+import { getShapes } from '../../Helpers/Shapes';
+import { WhiteContainer } from '../../Components/atoms/WhiteContainer';
+import { style } from './GameModal.style';
 
 
 class GameModal extends React.Component {
@@ -26,8 +27,11 @@ class GameModal extends React.Component {
 
   render() {
     return (
-      <View style={{width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.5)'}}>
-
+      <View style={style.container}>
+        {/* //dynamic Component */}
+        <WhiteContainer>
+          <Text>hello</Text>
+        </WhiteContainer>
       </View>
     )
   }

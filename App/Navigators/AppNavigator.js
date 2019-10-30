@@ -3,6 +3,7 @@ import { createAppContainer, createStackNavigator } from 'react-navigation'
 import SplashScreen from 'App/Screens/SplashScreen/SplashScreen'
 import HomeScreen from 'App/Screens/Home/HomeScreen'
 import GameScreen from 'App/Screens/Game/GameScreen'
+import GameModal from 'App/Screens/Game/components/GameModal'
 
 /**
  * The root screen contains the application's navigation.
@@ -16,13 +17,29 @@ const StackNavigator = createStackNavigator(
     SplashScreen: SplashScreen,
     MainScreen: GameScreen,
     GameScreen: GameScreen,
+    // GameModal: GameModal,
   },
   {
     // By default the application will show the splash screen
-    initialRouteName: 'SplashScreen',
+    initialRouteName: 'MainScreen',
     // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
     headerMode: 'none',
   }
 )
 
-export default createAppContainer(StackNavigator)
+const RootNavigator = createStackNavigator(
+  {
+    Main: {
+      screen: StackNavigator,
+    },
+    Modal: { 
+      screen: GameModal,
+    },
+  }, {
+    mode: 'modal',
+    headerMode: 'none',
+    transparentCard: true,
+  }
+)
+
+export default createAppContainer(RootNavigator)

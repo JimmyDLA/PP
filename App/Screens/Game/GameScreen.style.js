@@ -39,6 +39,8 @@ export const style = StyleSheet.create({
     width: '100%',
     borderColor: 'yellow',
     borderWidth: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   backgroundImage: { 
     height: '100%',
@@ -61,12 +63,15 @@ export const style = StyleSheet.create({
     alignItems: 'center', 
     justifyContent: 'center',
   },
-  subContainr: { 
+  subContainer: { 
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
     paddingLeft: 10,
+  },
+  subContainer2: { 
+    justifyContent: 'flex-end', 
   },
   time: { 
     fontSize: 16,
@@ -77,10 +82,24 @@ export const style = StyleSheet.create({
     fontWeight: '600',
     paddingLeft: 5,
   },
+  pauseContainer: { 
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   pause: { 
     width: 10,
   },
-  column: { 
-    width: '50%'
+  play: { 
+    height: 30,
+  },
+  column1: { 
+    marginTop: 5,
+  },
+  column2: { 
+    width: '33%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-start'
   },
 })

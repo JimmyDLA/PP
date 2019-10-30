@@ -8,7 +8,7 @@ import { STARTUP } from '../Redux/modules/splash';
 function* doStartup(action) {
   try {
     // When those operations are finished we redirect to the main screen
-    NavigationService.navigateAndReset('MainScreen');
+    NavigationService.navigateAndReset('Main');
   } catch (error) {
     console.warn(error);
   }

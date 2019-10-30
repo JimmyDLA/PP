@@ -11,14 +11,16 @@ import {
   Image,
   findNodeHandle,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native'
 import CountDown from 'react-native-countdown-component';
 import pauseImg from 'App/Assets/Images/pause.png'
-import matrixImg from 'App/Assets/Images/matrix_bkgd.png';
+import playImg from 'App/Assets/Images/play.png'
 import { connect } from 'react-redux'
+import { gameOver } from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
-import { TouchableHighlight } from 'react-native-gesture-handler';
+
 
 class GameScreen extends React.Component {
 
@@ -96,7 +98,7 @@ class GameScreen extends React.Component {
             this.setState({ score: score + 1, shapesFound: [...shapesFound, shape.id.toString()] });
             
             //YOU WON!!
-            if (shapesFound.length === 5) {
+            if (shapesFound.length === 24) {
               this.setState({ paused: true, won: true });
               this.points();
               alert('YOU WON!');
@@ -136,7 +138,7 @@ class GameScreen extends React.Component {
         this.setState({ score: score + 1 , timeLeft: timeLeft - 1});
       }
     }
-    const addPoints = setInterval(addOne, 500);
+    const addPoints = setInterval(addOne, 100);
   }
 
   handleOnPress = () => {
@@ -148,7 +150,13 @@ class GameScreen extends React.Component {
   }
 
   handlePause = () => {
-    this.setState({ paused: true });
+    const { paused } = this.state;
+    this.setState({ paused: !paused });
+  }
+
+  handleGameOver = () => {
+    const { gameOver } = this.props;
+    gameOver(true);
   }
 
   saveShapeLocation = (e, shape) => {
@@ -257,37 +265,46 @@ class GameScreen extends React.Component {
         </View>
         <View style={style.statsContainer}>
           {/* Stats container */}
-          <View style={style.column}>
-          <View style={style.subContainr}>
-            <Text style={style.time}>Time:</Text>
-            {won ? (
-              <Text style={style.score}>00 : {timeLeft}</Text>
-            ) : (
-              <CountDown
-                until={25}
-                onFinish={() => alert('GAME OVER!')}
-                onPress={() => alert('hello')}
-                size={14}
-                digitStyle={{backgroundColor: 'transparent', width: 20}}
-                timeToShow={['M','S']}
-                timeLabels={{}}
-                showSeparator
-                running={!paused}
-                onChange={this.handleTime}
-              />
-            )}
+          <View style={style.column0}>
+            <View style={style.subContainer}>
+              <Text style={style.time}>Time:</Text>
+              {won ? (
+                <Text style={style.score}>{timeLeft}</Text>
+              ) : (
+                <CountDown
+                  until={10}
+                  onFinish={this.handleGameOver}
+                  onPress={() => alert('hello')}
+                  size={14}
+                  digitStyle={{backgroundColor: 'transparent', width: 20}}
+                  timeToShow={['M','S']}
+                  timeLabels={{}}
+                  showSeparator
+                  running={!paused}
+                  onChange={this.handleTime}
+                />
+              )}
 
+            </View>
+            <View style={style.subContainer}>
+              <Text style={style.time}>Score:</Text>
+              <Text style={style.score}>{score}</Text>
+            </View>
           </View>
-          <View style={style.subContainr}>
-            <Text style={style.time}>Score:</Text>
-            <Text style={style.score}>{score}</Text>
+          <View style={style.column1}>
+            <View style={style.subContainer}>
+              <Text style={style.time}>Level: 1</Text>
+            </View>
           </View>
-          </View>
-          <View style={style.column}>
-            <View style={style.subContainr}>
-              <TouchableHighlight onPress={this.handlePause}>
-                <Image resizeMode="contain" style={style.pause} source={pauseImg} />
-              </TouchableHighlight>
+          <View style={style.column2}> 
+            <View style={[style.subContainer, style.subContainer2] }>
+              <TouchableOpacity style={style.pauseContainer} onPress={this.handlePause}>
+                {paused ? (
+                  <Image resizeMode="contain" style={style.play} source={playImg} />
+                  ) : (
+                  <Image resizeMode="contain" style={style.pause} source={pauseImg} />
+                )}
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -307,11 +324,11 @@ class GameScreen extends React.Component {
 //   liveInEurope: liveInEurope(state),
 // })
 
-// const mapDispatchToProps = (dispatch) => ({
-//   fetchUser: () => dispatch(ExampleActions.fetchUser()),
-// })
+const mapDispatchToProps = {
+  gameOver,
+}
 
 export default connect(
   null,
-  null
+  mapDispatchToProps,
 )(GameScreen)

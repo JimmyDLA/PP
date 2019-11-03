@@ -37,8 +37,8 @@ export const style = StyleSheet.create({
   statsContainer: { 
     height: '12%',
     width: '100%',
-    borderColor: 'yellow',
-    borderWidth: 2,
+    borderColor: 'black',
+    borderTopWidth: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

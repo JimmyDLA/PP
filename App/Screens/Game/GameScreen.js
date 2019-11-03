@@ -17,7 +17,7 @@ import CountDown from 'react-native-countdown-component';
 import pauseImg from 'App/Assets/Images/pause.png'
 import playImg from 'App/Assets/Images/play.png'
 import { connect } from 'react-redux'
-import { gameOver } from 'App/Redux/modules/game';
+import { gameOver, pauseGame, gameWon } from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
 
@@ -39,7 +39,7 @@ class GameScreen extends React.Component {
       shapesFound: [],
       timeLeft: 0,
       yOffset: 0,
-      paused: false,
+      // paused: false,
       score: 0,
       won: false,
 
@@ -99,9 +99,12 @@ class GameScreen extends React.Component {
             
             //YOU WON!!
             if (shapesFound.length === 24) {
-              this.setState({ paused: true, won: true });
+              this.setState({ won: true });
               this.points();
-              alert('YOU WON!');
+              const { timeLeft } = this.state;
+              const { gameWon } = this.props;
+              const params = { score, timeLeft, won: true }
+              gameWon(params);
             }
           }
         })
@@ -150,8 +153,8 @@ class GameScreen extends React.Component {
   }
 
   handlePause = () => {
-    const { paused } = this.state;
-    this.setState({ paused: !paused });
+    const { pauseGame } = this.props;
+    pauseGame(true);
   }
 
   handleGameOver = () => {
@@ -219,11 +222,12 @@ class GameScreen extends React.Component {
       grabbedShape,
       isGrabbing,
       timeLeft,
-      paused,
       score,
       won,
     } = this.state;
 
+    const { gamePaused } = this.props;
+debugger
     return (
       <View style={style.container}>
         {isGrabbing && (
@@ -272,7 +276,7 @@ class GameScreen extends React.Component {
                 <Text style={style.score}>{timeLeft}</Text>
               ) : (
                 <CountDown
-                  until={10}
+                  until={100}
                   onFinish={this.handleGameOver}
                   onPress={() => alert('hello')}
                   size={14}
@@ -280,7 +284,7 @@ class GameScreen extends React.Component {
                   timeToShow={['M','S']}
                   timeLabels={{}}
                   showSeparator
-                  running={!paused}
+                  running={!gamePaused}
                   onChange={this.handleTime}
                 />
               )}
@@ -299,11 +303,7 @@ class GameScreen extends React.Component {
           <View style={style.column2}> 
             <View style={[style.subContainer, style.subContainer2] }>
               <TouchableOpacity style={style.pauseContainer} onPress={this.handlePause}>
-                {paused ? (
-                  <Image resizeMode="contain" style={style.play} source={playImg} />
-                  ) : (
-                  <Image resizeMode="contain" style={style.pause} source={pauseImg} />
-                )}
+                <Image resizeMode="contain" style={style.pause} source={pauseImg} />
               </TouchableOpacity>
             </View>
           </View>
@@ -317,18 +317,19 @@ class GameScreen extends React.Component {
 
 // }
 
-// const mapStateToProps = (state) => ({
-//   user: state.example.user,
-//   userIsLoading: state.example.userIsLoading,
-//   userErrorMessage: state.example.userErrorMessage,
-//   liveInEurope: liveInEurope(state),
-// })
+const mapStateToProps = ({
+  game: { gamePaused },
+}) => ({
+  gamePaused,
+})
 
 const mapDispatchToProps = {
   gameOver,
+  pauseGame,
+  gameWon,
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(GameScreen)

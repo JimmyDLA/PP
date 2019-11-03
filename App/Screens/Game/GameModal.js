@@ -14,8 +14,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { getShapes } from '../../Helpers/Shapes';
 import { WhiteContainer } from '../../Components/atoms/WhiteContainer';
+import { ModalState } from '../../Components/organisms/ModalState';
+import { removeModal, resumeGame } from 'App/Redux/modules/game';
 import { style } from './GameModal.style';
 
 
@@ -25,21 +26,30 @@ class GameModal extends React.Component {
     super();
   }
 
+  handleResume = () => {
+    const { removeModal, resumeGame } = this.props;
+    removeModal();
+    resumeGame(false);
+  }
+
   render() {
+    const { navigation: { state: { params } } } = this.props;
     return (
       <View style={style.container}>
-        {/* //dynamic Component */}
-        <WhiteContainer>
-          <Text>hello</Text>
-        </WhiteContainer>
+        <ModalState onResume={this.handleResume} params={params} />
       </View>
     )
   }
 }
 
+const mapDispatchToProps = {
+  removeModal,
+  resumeGame,
+}
+
 export default connect(
   null,
-  null
+  mapDispatchToProps,
 )(GameModal)
 
 

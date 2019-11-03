@@ -21,6 +21,11 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: [
+    'game',
+    'home',
+    'splash',
+  ],
 }
 
 const reducer = persistReducer(persistConfig, rootReducer);

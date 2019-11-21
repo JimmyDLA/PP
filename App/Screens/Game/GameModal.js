@@ -1,22 +1,18 @@
 import React from 'react';
 import {
-  Platform, 
-  Text, 
   View, 
-  Animated,
-  TouchableWithoutFeedback, 
-  ActivityIndicator, 
-  ImageBackground,
-  PanResponder,
-  Image,
-  findNodeHandle,
-  Dimensions,
-  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { WhiteContainer } from '../../Components/atoms/WhiteContainer';
 import { ModalState } from '../../Components/organisms/ModalState';
-import { removeModal, resumeGame } from 'App/Redux/modules/game';
+import { getShapes } from '../../Helpers/Shapes'
+import { 
+  updateShapesObject,
+  updateShapesFound,
+  updateShapesInfo,
+  removeModal, 
+  resumeGame,
+  gameTime,
+} from 'App/Redux/modules/game';
 import { style } from './GameModal.style';
 
 
@@ -32,23 +28,88 @@ class GameModal extends React.Component {
     resumeGame(false);
   }
 
+
+  makeid(length) {
+    let result = '';
+    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  }
+
+  handleRestart = () => {
+    const { 
+      updateShapesFound, 
+      updateShapesInfo,
+      removeModal, 
+      resumeGame,
+      gameTime,
+      level,
+    } = this.props;
+
+    const time = 5 - level;
+    const timeID = this.makeid(5);
+    updateShapesFound([]);
+    updateShapesInfo([])
+    this.handleGetShapes();
+    gameTime({ time, timeID })
+    resumeGame(false);
+    removeModal();
+  }
+
+  handleGetShapes = () => {
+    const { updateShapesObject } = this.props;
+    const objectShapes = {
+      shapesInMatrix: getShapes(),
+      shapesInSelection: getShapes(),
+    }
+    updateShapesObject(objectShapes);
+  }
+
   render() {
-    const { navigation: { state: { params } } } = this.props;
+    const { score, timeLeft, navigation: { state: { params } } } = this.props;
+
     return (
       <View style={style.container}>
-        <ModalState onResume={this.handleResume} params={params} />
+        <ModalState 
+          onResume={this.handleResume} 
+          onRestart={this.handleRestart}
+          onQuit={this.handleQuit}
+          onNextLevel={this.handleNextLevel}
+          timeLeft={timeLeft}
+          params={params}
+          score={score}
+        />
       </View>
     )
   }
 }
 
+const mapStateToProps = ({
+  game: {
+    score,
+    timeLeft,
+    level,
+  }
+}) => ({
+  score,
+  timeLeft,
+  level,
+})
+
 const mapDispatchToProps = {
+  updateShapesObject,
+  updateShapesFound,
+  updateShapesInfo,
   removeModal,
   resumeGame,
+  gameTime,
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(GameModal)
 

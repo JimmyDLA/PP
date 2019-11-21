@@ -12,4 +12,11 @@ export const style = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
+  body: { 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bodyText: { 
+    fontSize: 18,
+  },
 });

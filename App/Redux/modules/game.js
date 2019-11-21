@@ -5,13 +5,26 @@ export const GAME_PAUSE = 'pp/game/GAME_PAUSE';
 export const GAME_RESUME = 'pp/game/GAME_RESUME';
 export const GAME_OVER = 'pp/game/GAME_OVER';
 export const GAME_WIN = 'pp/game/GAME_WIN';
+export const GAME_TIME = 'pp/game/GAME_TIME';
+export const SHAPES_INFO = 'pp/game/SHAPES_INFO';
+export const SHAPES_OBJECT = 'pp/game/SHAPES_OBJECT';
+export const SHAPES_FOUND = 'pp/game/SHAPES_FOUND';
 
 // Initial State
 export const initialState = {
   gameStarted: false,
   gameEnded: false,
   gamePaused: false,
+  level: 1,
   won: false,
+  time: 10,
+  timeID: 'aaaaa',
+  score: 0,
+  timeLeft: 0,
+  shapesInfo: [],
+  shapesInMatrix: [],
+  shapesInSelection: [],
+  shapesFound: [],
 };
 
 // Reducer
@@ -22,18 +35,22 @@ export const game = (state = initialState, action) => {
     case START_GAME:
       return { ...state, gameStarted: data };
     case GAME_OVER:
-      debugger
       return { ...state, gameEnded: data };
     case GAME_PAUSE:
-      debugger
       return { ...state, gamePaused: data };
     case GAME_WIN:
-      debugger
       return { ...state, ...data };
+    case GAME_TIME:
+      return { ...state, ...data  };
     case GAME_RESUME:
-      debugger
       return { ...state, gamePaused: data };
-    default:
+    case SHAPES_INFO:
+      return { ...state, shapesInfo: data };
+    case SHAPES_OBJECT:
+      return { ...state, shapesInSelection: data.shapesInSelection, shapesInMatrix: data.shapesInMatrix };
+    case SHAPES_FOUND:
+      return { ...state, shapesFound: data };  
+      default:
       return state;
   }
 };
@@ -45,3 +62,7 @@ export const pauseGame = data => ({ type: GAME_PAUSE, data });
 export const resumeGame = data => ({ type: GAME_RESUME, data });
 export const gameOver = data => ({ type: GAME_OVER, data });
 export const gameWon = data => ({ type: GAME_WIN, data });
+export const gameTime = data => ({ type: GAME_TIME, data });
+export const updateShapesInfo = data => ({ type: SHAPES_INFO, data });
+export const updateShapesObject = data => ({ type: SHAPES_OBJECT, data });
+export const updateShapesFound = data => ({ type: SHAPES_FOUND, data });

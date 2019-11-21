@@ -7,18 +7,34 @@ import { style } from './ModalState.style';
 export class ModalState extends React.Component {
   constructor(props) {
     super(props);
-    this.handleOnResume = this.handleOnResume.bind(this);
+    this.handleResume = this.handleResume.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
+    this.handleNextLevel = this.handleNextLevel.bind(this);
+    this.handleQuit = this.handleQuit.bind(this);
   }
 
   //Functions
-  handleOnResume = () => {
-    debugger
+  handleResume = () => {
     const { onResume } = this.props;
     onResume();
   }
 
-  renderPause = () => {
+  handleRestart = () => {
+    const { onRestart } = this.props;
+    onRestart();
+  }
 
+  handleNextLevel = () => {
+    const { onNextLevel } = this.props;
+    onNextLevel();
+  }
+
+  handleQuit = () => {
+    const { onQuit } = this.props;
+    onQuit();
+  }
+
+  renderPause = () => {
     return (
       <WhiteContainer>
         <View style={style.header}>
@@ -27,12 +43,12 @@ export class ModalState extends React.Component {
         <View style={style.body}>
           <Button 
             label="Resume"
-            onPress={this.handleOnResume}
+            onPress={this.handleResume}
           />
           <Button 
             label="Quit"
             secondary
-            // onPress={}
+            onPress={this.handleQuit}
           />
         </View>
       </WhiteContainer>
@@ -40,28 +56,27 @@ export class ModalState extends React.Component {
   }
 
   renderWin = () => {
-
+    const { timeLeft, score } = this.props;
     return (
       <WhiteContainer>
       <View style={style.header}>
         <Text style={style.title}>You Won</Text>
       </View>
       <View style={style.body}>
-        {/* <Text>Game: 25</Text>
-        <Text>Time Left: {}</Text>
-        <Text>Bonus: `${0}`</Text>
-        <Text>Total Score: {}</Text> */}
-        <Button 
-          label="Quit"
-          // onPress={}
-        />
+        <Text style={style.bodyText}>Game: 25</Text>
+        <Text style={style.bodyText}>Time Left: {timeLeft}</Text>
+        <Text style={style.bodyText}>Bonus: 0</Text>
+        <Text style={style.bodyText}>Total Score: {score}</Text>
+        <Button
+          label="Next Level"
+          onPress={this.handleNextLevel}
+          />
       </View>
     </WhiteContainer>
     )
   }
 
   renderLose = () => {
-
     return (
       <WhiteContainer>
       <View style={style.header}>
@@ -70,12 +85,12 @@ export class ModalState extends React.Component {
       <View style={style.body}>
         <Button 
           label="Try Again"
-          onPress={this.handleOnResume}
+          onPress={this.handleRestart}
         />
         <Button 
           label="Quit"
           secondary 
-          // onPress={}
+          onPress={this.handleQuit}
         />
       </View>
     </WhiteContainer>
@@ -84,7 +99,6 @@ export class ModalState extends React.Component {
 
   render() {
     const { params: { paused, won, lost } } = this.props;
-debugger
     if (paused) {
       return this.renderPause();
     }

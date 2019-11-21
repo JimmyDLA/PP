@@ -1,26 +1,25 @@
 import React from 'react'
 import {
-  Platform, 
   Text, 
   View, 
   Animated,
-  TouchableWithoutFeedback, 
-  ActivityIndicator, 
-  ImageBackground,
   PanResponder,
   Image,
-  findNodeHandle,
-  Dimensions,
   TouchableOpacity,
 } from 'react-native'
 import CountDown from 'react-native-countdown-component';
 import pauseImg from 'App/Assets/Images/pause.png'
-import playImg from 'App/Assets/Images/play.png'
 import { connect } from 'react-redux'
-import { gameOver, pauseGame, gameWon } from 'App/Redux/modules/game';
+import { 
+  gameOver, 
+  pauseGame, 
+  gameWon,
+  updateShapesObject,
+  updateShapesFound,
+  updateShapesInfo,
+} from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
-
 
 class GameScreen extends React.Component {
 
@@ -29,20 +28,13 @@ class GameScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      shapesInMatrix: [],
-      shapesInSelection: [],
       isGrabbing: false,
       grabbedShape: {},
       matrixBorder: 0,
       shapeBorder: 0,
-      shapesInfo: [],
-      shapesFound: [],
       timeLeft: 0,
       yOffset: 0,
-      // paused: false,
       score: 0,
-      won: false,
-
     };
 
     this._panResponder = PanResponder.create({
@@ -54,24 +46,26 @@ class GameScreen extends React.Component {
 
       onPanResponderGrant: (evt, gestureState) => {
         const { memoizedProps: { shape } } = evt._targetInst;
-        const { height, width } = this.state.shapesInfo[0];
+        const { height, width } = this.props.shapesInfo[0];
+        const { y0, x0 } = gestureState;
+
         this.setState({
           grabbedShape: shape,
           isGrabbing: true,
         });
 
-        Animated.event([{ x: this.point.x }])({ x: gestureState.x0 - (width / 2) })
-        Animated.event([{ y: this.point.y }])({ y: gestureState.y0  - (height / 2)})
+        Animated.event([{ x: this.point.x }])({ x: x0 - (width / 2) })
+        Animated.event([{ y: this.point.y }])({ y: y0  - (height / 2)})
         // The gesture has started. Show visual feedback so the user knows
         // what is happening!
         // gestureState.d{x,y} will be set to zero now
       },
       onPanResponderMove: (evt, gestureState) => {
-        const { height, width } = this.state.shapesInfo[0];
-
+        const { height, width } = this.props.shapesInfo[0];
         const { moveX, moveY } = gestureState;
-        Animated.event([{ y: this.point.y }])({ y: gestureState.moveY - (height / 2) })
-        Animated.event([{ x: this.point.x }])({ x: gestureState.moveX - (width / 2) })
+
+        Animated.event([{ y: this.point.y }])({ y: moveY - (height / 2) })
+        Animated.event([{ x: this.point.x }])({ x: moveX - (width / 2) })
         // The most recent move distance is gestureState.move{X,Y}
         // The accumulated gesture distance since becoming responder is
         // gestureState.d{x,y}
@@ -79,11 +73,10 @@ class GameScreen extends React.Component {
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
         const { moveX, moveY } = gestureState;
+        const { shapesInfo, shapesFound, updateShapesFound} = this.props;
         const { 
-          shapesFound, 
-          shapesInfo, 
-          grabbedShape, 
-          yOffset, 
+          grabbedShape,
+          yOffset,
           matrixBorder,
           score,
         } = this.state;
@@ -95,15 +88,23 @@ class GameScreen extends React.Component {
             (moveY <= shape.y + shape.height + yOffset + matrixBorder) &&
             (shape.id === grabbedShape.id)
           ) {
-            this.setState({ score: score + 1, shapesFound: [...shapesFound, shape.id.toString()] });
-            
+            this.setState({ score: score + 1 });
+            const newShapesFound = [
+              ...shapesFound,
+              shape.id.toString(),
+            ];
+            updateShapesFound(newShapesFound);
             //YOU WON!!
             if (shapesFound.length === 24) {
-              this.setState({ won: true });
               this.points();
               const { timeLeft } = this.state;
-              const { gameWon } = this.props;
-              const params = { score, timeLeft, won: true }
+              const { gameWon, level } = this.props;
+              const params = { 
+                score: score + 1, 
+                level: level + 1,
+                timeLeft,
+                won: true
+              }
               gameWon(params);
             }
           }
@@ -128,12 +129,12 @@ class GameScreen extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ shapesInMatrix: getShapes(), shapesInSelection: getShapes()})
+    this.handleGetShapes();
   }
 
   points = () => {
     const addOne = () => {
-    let { score, timeLeft } = this.state;
+      let { score, timeLeft } = this.state;
 
       if (timeLeft === 0) {
         clearInterval(addPoints);
@@ -144,12 +145,17 @@ class GameScreen extends React.Component {
     const addPoints = setInterval(addOne, 100);
   }
 
-  handleOnPress = () => {
-    console.warn('PRESSED!')
+  handleGetShapes = () => {
+    const { updateShapesObject } = this.props;
+    const objectShapes = {
+      shapesInMatrix: getShapes(),
+      shapesInSelection: getShapes(),
+    }
+    updateShapesObject(objectShapes);
   }
 
-  handleTime = (e) => {
-    this.setState({ timeLeft: e });
+  handleOnPress = () => {
+    console.warn('PRESSED!')
   }
 
   handlePause = () => {
@@ -163,13 +169,17 @@ class GameScreen extends React.Component {
   }
 
   saveShapeLocation = (e, shape) => {
-    const { shapesInfo } = this.state;
+    const { shapesInfo, updateShapesInfo } = this.props;
     const {layout: {x, y, width, height} } = e.nativeEvent;
     const {style: { borderWidth } } = e._targetInst.memoizedProps
     if (shape.id === 1) {
       this.setState({ shapeBorder: borderWidth });
     }
-    this.setState({ shapesInfo: [...shapesInfo, { x, y, width, height, ...shape }] });
+    const newShapesInfo = [
+      ...shapesInfo,
+      { x, y, width, height, ...shape}
+    ]
+    updateShapesInfo(newShapesInfo);
   }
 
   saveMatrixBorder = (e) => {
@@ -179,7 +189,7 @@ class GameScreen extends React.Component {
   }
 
   renderShape = ( shape, i, hidden ) => {
-    const { shapesFound } = this.state;
+    const { shapesFound } = this.props;
     const found = shapesFound.find(id => id == shape.id);
 
     if (!found && !hidden) {
@@ -217,17 +227,22 @@ class GameScreen extends React.Component {
 
   render() {
     const { 
-      shapesInMatrix, 
       shapesInSelection, 
+      shapesInMatrix, 
+      gamePaused, 
+      timeID,
+      level,
+      time,
+      won,
+    } = this.props;
+
+    const { 
       grabbedShape,
       isGrabbing,
       timeLeft,
       score,
-      won,
     } = this.state;
 
-    const { gamePaused } = this.props;
-debugger
     return (
       <View style={style.container}>
         {isGrabbing && (
@@ -276,7 +291,8 @@ debugger
                 <Text style={style.score}>{timeLeft}</Text>
               ) : (
                 <CountDown
-                  until={100}
+                  id={timeID}
+                  until={time}
                   onFinish={this.handleGameOver}
                   onPress={() => alert('hello')}
                   size={14}
@@ -297,7 +313,7 @@ debugger
           </View>
           <View style={style.column1}>
             <View style={style.subContainer}>
-              <Text style={style.time}>Level: 1</Text>
+              <Text style={style.time}>Level: {level}</Text>
             </View>
           </View>
           <View style={style.column2}> 
@@ -318,14 +334,35 @@ debugger
 // }
 
 const mapStateToProps = ({
-  game: { gamePaused },
+  game: { 
+    gamePaused, 
+    level,
+    shapesInSelection,
+    shapesInMatrix,
+    shapesInfo,
+    shapesFound,
+    timeID,
+    time,
+    won,
+  },
 }) => ({
+  shapesInSelection,
+  shapesInMatrix,
+  shapesFound,
   gamePaused,
+  shapesInfo,
+  timeID,
+  level,
+  time,
+  won,
 })
 
 const mapDispatchToProps = {
-  gameOver,
+  updateShapesObject,
+  updateShapesFound,
+  updateShapesInfo,
   pauseGame,
+  gameOver,
   gameWon,
 }
 

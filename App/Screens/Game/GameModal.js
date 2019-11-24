@@ -11,6 +11,7 @@ import {
   updateShapesInfo,
   removeModal, 
   resumeGame,
+  quitGame,
   gameTime,
 } from 'App/Redux/modules/game';
 import { style } from './GameModal.style';
@@ -49,7 +50,7 @@ class GameModal extends React.Component {
       level,
     } = this.props;
 
-    const time = 5 - level;
+    const time = 90 - level;
     const timeID = this.makeid(5);
     updateShapesFound([]);
     updateShapesInfo([])
@@ -66,6 +67,15 @@ class GameModal extends React.Component {
       shapesInSelection: getShapes(),
     }
     updateShapesObject(objectShapes);
+  }
+
+  handleNextLevel = () => {
+    this.handleRestart();
+  }
+
+  handleQuit = () => { 
+    const { quitGame } = this.props;
+    quitGame();
   }
 
   render() {
@@ -105,6 +115,7 @@ const mapDispatchToProps = {
   updateShapesInfo,
   removeModal,
   resumeGame,
+  quitGame,
   gameTime,
 }
 

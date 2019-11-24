@@ -2,6 +2,7 @@
 export const REMOVE_MODAL = 'pp/game/REMOVE_MODAL';
 export const START_GAME = 'pp/game/START_GAME';
 export const GAME_PAUSE = 'pp/game/GAME_PAUSE';
+export const GAME_QUIT = 'pp/game/GAME_QUIT';
 export const GAME_RESUME = 'pp/game/GAME_RESUME';
 export const GAME_OVER = 'pp/game/GAME_OVER';
 export const GAME_WIN = 'pp/game/GAME_WIN';
@@ -17,8 +18,8 @@ export const initialState = {
   gamePaused: false,
   level: 1,
   won: false,
-  time: 10,
-  timeID: 'aaaaa',
+  time: 90,
+  timeID: '',
   score: 0,
   timeLeft: 0,
   shapesInfo: [],
@@ -57,6 +58,7 @@ export const game = (state = initialState, action) => {
 
 // Action creators
 export const removeModal = () => ({ type: REMOVE_MODAL });
+export const quitGame = () => ({ type: GAME_QUIT });
 export const startGame = data => ({ type: START_GAME, data });
 export const pauseGame = data => ({ type: GAME_PAUSE, data });
 export const resumeGame = data => ({ type: GAME_RESUME, data });

@@ -14,6 +14,7 @@ import {
   gameOver, 
   pauseGame, 
   gameWon,
+  gameTime,
   updateShapesObject,
   updateShapesFound,
   updateShapesInfo,
@@ -74,10 +75,10 @@ class GameScreen extends React.Component {
       onPanResponderRelease: (evt, gestureState) => {
         const { moveX, moveY } = gestureState;
         const { shapesInfo, shapesFound, updateShapesFound} = this.props;
-        const { 
+        const {
           grabbedShape,
-          yOffset,
           matrixBorder,
+          yOffset,
           score,
         } = this.state;
         shapesInfo.find(shape => {
@@ -165,10 +166,12 @@ class GameScreen extends React.Component {
 
   handleGameOver = () => {
     const { gameOver } = this.props;
+    this.setState({ score: 0, isGrabbing: false });
     gameOver(true);
   }
 
   saveShapeLocation = (e, shape) => {
+    debugger
     const { shapesInfo, updateShapesInfo } = this.props;
     const {layout: {x, y, width, height} } = e.nativeEvent;
     const {style: { borderWidth } } = e._targetInst.memoizedProps
@@ -248,7 +251,7 @@ class GameScreen extends React.Component {
         {isGrabbing && (
           <Animated.View
             style={[
-              { 
+              {
                 ...style.shapeContainer, 
                 position: 'absolute',
                 zIndex: 2, 
@@ -263,7 +266,9 @@ class GameScreen extends React.Component {
         )}
         <View style={style.matrixContainer} onLayout={this.saveMatrixBorder}>
           <View style={style.innerMatrix}>
-            {shapesInMatrix.map((shape, id) => (
+            {shapesInMatrix.map((shape, id) => {
+            debugger
+            return (
               <View
                 onLayout={(e) => this.saveShapeLocation(e, shape)}
                 key={`${shape.name}${id}`} 
@@ -271,7 +276,7 @@ class GameScreen extends React.Component {
               >
                 {this.renderShape(shape, shape.id, true)}
               </View>
-            ))}
+            )})}
           </View>
 
         </View>
@@ -362,6 +367,7 @@ const mapDispatchToProps = {
   updateShapesFound,
   updateShapesInfo,
   pauseGame,
+  gameTime,
   gameOver,
   gameWon,
 }

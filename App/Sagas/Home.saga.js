@@ -8,7 +8,7 @@ import { SET_GAME } from '../Redux/modules/home';
 export function* doSetGame() {
   try {
     // When those operations are finished we redirect to the main screen
-    NavigationService.navigateAndReset('GameScreen');
+    NavigationService.navigate('GameScreen');
   } catch (error) {
     console.warn(error);
   }

@@ -4,6 +4,7 @@ import {
   START_GAME, 
   GAME_PAUSE,
   GAME_OVER,
+  GAME_QUIT,
   GAME_WIN,
   REMOVE_MODAL,
 } from '../Redux/modules/game';
@@ -57,10 +58,19 @@ export function* doRemoveModal() {
   }
 }
 
+export function* doQuit() {
+  try {
+    NavigationService.navigate('MainScreen');
+  } catch (error) {
+    console.warn(error)
+  }
+}
+
 export function* watchGame() {
   yield takeEvery(START_GAME, doStartGame);
   yield takeEvery(GAME_PAUSE, doGamePause);
   yield takeEvery(GAME_OVER, doGameOver);
   yield takeEvery(REMOVE_MODAL, doRemoveModal);
+  yield takeEvery(GAME_QUIT, doQuit);
   yield takeEvery(GAME_WIN, doGameWin);
 }

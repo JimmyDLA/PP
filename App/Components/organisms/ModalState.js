@@ -32,7 +32,6 @@ export class ModalState extends React.Component {
   handleQuit = () => {
     const { onQuit, onRestart } = this.props;
     onQuit();
-    onRestart();
   }
 
   renderPause = () => {

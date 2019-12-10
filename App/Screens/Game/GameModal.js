@@ -13,6 +13,7 @@ import {
   resumeGame,
   quitGame,
   gameTime,
+  gameWon,
 } from 'App/Redux/modules/game';
 import { style } from './GameModal.style';
 
@@ -22,13 +23,6 @@ class GameModal extends React.Component {
   constructor() {
     super();
   }
-
-  handleResume = () => {
-    const { removeModal, resumeGame } = this.props;
-    removeModal();
-    resumeGame(false);
-  }
-
 
   makeid(length) {
     let result = '';
@@ -40,13 +34,20 @@ class GameModal extends React.Component {
     return result;
   }
 
-  handleRestart = () => {
+  handleResume = () => {
+    const { removeModal, resumeGame } = this.props;
+    removeModal();
+    resumeGame(false);
+  }
+
+  handleReset = () => {
     const { 
       updateShapesFound, 
       updateShapesInfo,
       removeModal, 
       resumeGame,
       gameTime,
+      gameWon,
       level,
     } = this.props;
 
@@ -54,10 +55,35 @@ class GameModal extends React.Component {
     const timeID = this.makeid(5);
     updateShapesFound([]);
     updateShapesInfo([])
-    this.handleGetShapes();
     gameTime({ time, timeID })
     resumeGame(false);
+    gameWon({ won: false });
     removeModal();
+  }
+
+  handleRestart = () => {
+    const { updateShapesObject } = this.props;
+    const emptyObject = {
+      shapesInMatrix: [],
+      shapesInSelection: [],
+    }
+    updateShapesObject(emptyObject);
+    this.handleReset();
+    this.handleGetShapes();
+  }
+
+  handleNextLevel = () => {
+    const { gameWon } = this.props;
+
+    gameWon({ won: false });
+    this.handleRestart();
+  }
+
+  handleQuit = () => { 
+    const { quitGame } = this.props;
+
+    this.handleReset();
+    quitGame();
   }
 
   handleGetShapes = () => {
@@ -67,15 +93,6 @@ class GameModal extends React.Component {
       shapesInSelection: getShapes(),
     }
     updateShapesObject(objectShapes);
-  }
-
-  handleNextLevel = () => {
-    this.handleRestart();
-  }
-
-  handleQuit = () => { 
-    const { quitGame } = this.props;
-    quitGame();
   }
 
   render() {
@@ -117,6 +134,7 @@ const mapDispatchToProps = {
   resumeGame,
   quitGame,
   gameTime,
+  gameWon,
 }
 
 export default connect(

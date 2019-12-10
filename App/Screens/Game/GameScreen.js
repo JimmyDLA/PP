@@ -170,8 +170,9 @@ class GameScreen extends React.Component {
     gameOver(true);
   }
 
-  saveShapeLocation = (e, shape) => {
+  saveShapeLocation = (e, shape, id) => {
     debugger
+    console.log('save shape ID: ',id,)
     const { shapesInfo, updateShapesInfo } = this.props;
     const {layout: {x, y, width, height} } = e.nativeEvent;
     const {style: { borderWidth } } = e._targetInst.memoizedProps
@@ -182,6 +183,7 @@ class GameScreen extends React.Component {
       ...shapesInfo,
       { x, y, width, height, ...shape}
     ]
+
     updateShapesInfo(newShapesInfo);
   }
 
@@ -189,6 +191,23 @@ class GameScreen extends React.Component {
     const {layout: { y } } = e.nativeEvent;
     const {style: {borderWidth}} = e._targetInst.memoizedProps
     this.setState({ matrixBorder: borderWidth, yOffset: y });
+  }
+
+  renderInnerMatrix = () => {
+    const {shapesInMatrix } = this.props;
+
+    const x = shapesInMatrix.map((shape, arr) => {
+                console.log('render ', 'map ID: ', shape.id)
+      return (
+      <View
+        onLayout={(e) => this.saveShapeLocation(e, shape, shape.id)}
+        key={`${shape.name}${shape.id}`} 
+        style={style.shapeContainer}
+      >
+        {this.renderShape(shape, shape.id, true)}
+      </View>
+    )});
+    return x;
   }
 
   renderShape = ( shape, i, hidden ) => {
@@ -266,17 +285,7 @@ class GameScreen extends React.Component {
         )}
         <View style={style.matrixContainer} onLayout={this.saveMatrixBorder}>
           <View style={style.innerMatrix}>
-            {shapesInMatrix.map((shape, id) => {
-            debugger
-            return (
-              <View
-                onLayout={(e) => this.saveShapeLocation(e, shape)}
-                key={`${shape.name}${id}`} 
-                style={style.shapeContainer}
-              >
-                {this.renderShape(shape, shape.id, true)}
-              </View>
-            )})}
+            {this.renderInnerMatrix()}
           </View>
 
         </View>

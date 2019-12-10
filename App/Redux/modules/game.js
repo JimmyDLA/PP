@@ -65,6 +65,8 @@ export const resumeGame = data => ({ type: GAME_RESUME, data });
 export const gameOver = data => ({ type: GAME_OVER, data });
 export const gameWon = data => ({ type: GAME_WIN, data });
 export const gameTime = data => ({ type: GAME_TIME, data });
-export const updateShapesInfo = data => ({ type: SHAPES_INFO, data });
+export const updateShapesInfo = data => {
+  console.log('module: ', data)
+  return{ type: SHAPES_INFO, data }};
 export const updateShapesObject = data => ({ type: SHAPES_OBJECT, data });
 export const updateShapesFound = data => ({ type: SHAPES_FOUND, data });

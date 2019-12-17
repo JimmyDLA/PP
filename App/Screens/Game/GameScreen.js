@@ -1,14 +1,10 @@
 import React from 'react'
 import {
-  Text, 
   View, 
   Animated,
   PanResponder,
   Image,
-  TouchableOpacity,
 } from 'react-native'
-import CountDown from 'react-native-countdown-component';
-import pauseImg from 'App/Assets/Images/pause.png'
 import { connect } from 'react-redux'
 import { 
   gameOver, 
@@ -21,6 +17,9 @@ import {
 } from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
+import { Matrix } from '../../Components/organisms/Matrix';
+import { Selection } from '../../Components/organisms/Selection';
+import { Status } from '../../Components/organisms/Status';
 
 class GameScreen extends React.Component {
 
@@ -33,6 +32,7 @@ class GameScreen extends React.Component {
       grabbedShape: {},
       matrixBorder: 0,
       shapeBorder: 0,
+      shapesInfo: [],
       timeLeft: 0,
       yOffset: 0,
       score: 0,
@@ -96,7 +96,7 @@ class GameScreen extends React.Component {
             ];
             updateShapesFound(newShapesFound);
             //YOU WON!!
-            if (shapesFound.length === 24) {
+            if (shapesFound.length === 5) {
               this.points();
               const { timeLeft } = this.state;
               const { gameWon, level } = this.props;
@@ -155,10 +155,6 @@ class GameScreen extends React.Component {
     updateShapesObject(objectShapes);
   }
 
-  handleOnPress = () => {
-    console.warn('PRESSED!')
-  }
-
   handlePause = () => {
     const { pauseGame } = this.props;
     pauseGame(true);
@@ -171,9 +167,10 @@ class GameScreen extends React.Component {
   }
 
   saveShapeLocation = (e, shape, id) => {
-    debugger
+    // debugger
     console.log('save shape ID: ',id,)
-    const { shapesInfo, updateShapesInfo } = this.props;
+    const { updateShapesInfo } = this.props;
+    const { shapesInfo } = this.state;
     const {layout: {x, y, width, height} } = e.nativeEvent;
     const {style: { borderWidth } } = e._targetInst.memoizedProps
     if (shape.id === 1) {
@@ -182,9 +179,16 @@ class GameScreen extends React.Component {
     const newShapesInfo = [
       ...shapesInfo,
       { x, y, width, height, ...shape}
-    ]
+    ];
 
-    updateShapesInfo(newShapesInfo);
+    this.setState({ shapesInfo: newShapesInfo });
+
+    if (newShapesInfo.length === 25) {
+      console.log('SAVED25')
+
+      updateShapesInfo(newShapesInfo);
+      this.setState({ shapesInfo: []});
+    }
   }
 
   saveMatrixBorder = (e) => {
@@ -217,9 +221,9 @@ class GameScreen extends React.Component {
     if (!found && !hidden) {
       return (
         <View
-        {...this._panResponder.panHandlers}
-        shape={shape}
-        style={style.slopHit}
+          {...this._panResponder.panHandlers}
+          shape={shape}
+          style={style.slopHit}
         >
           <Image 
             key={`${shape.name}${i}`} 
@@ -234,12 +238,12 @@ class GameScreen extends React.Component {
     if (hidden) { 
       return (
         <Image 
-        key={`${shape.name}${i}`} 
-        style={[style.shapeImg]} 
-        source={!hidden || found ? shape.activeImg : shape.inactiveImg} 
-        shape={shape}
-        resizeMode="contain"
-      />
+          key={`${shape.name}${i}`} 
+          style={[style.shapeImg]} 
+          source={!hidden || found ? shape.activeImg : shape.inactiveImg} 
+          shape={shape}
+          resizeMode="contain"
+        />
       )
     }
     if (found) {
@@ -283,61 +287,32 @@ class GameScreen extends React.Component {
             {this.renderShape(grabbedShape, grabbedShape.id)}
           </Animated.View> 
         )}
-        <View style={style.matrixContainer} onLayout={this.saveMatrixBorder}>
-          <View style={style.innerMatrix}>
-            {this.renderInnerMatrix()}
-          </View>
 
-        </View>
-        <View style={style.selectionContainer}>
-          {shapesInSelection.map((shape, id) => (
-            <View key={`${shape.name}${id}`} style={{...style.shapeContainer, borderWidth: 0, opacity: grabbedShape.id === shape.id ? 0 : 1 }}>
-              {this.renderShape(shape, shape.id)}
-            </View>
-          ))}
-        </View>
-        <View style={style.statsContainer}>
-          {/* Stats container */}
-          <View style={style.column0}>
-            <View style={style.subContainer}>
-              <Text style={style.time}>Time:</Text>
-              {won ? (
-                <Text style={style.score}>{timeLeft}</Text>
-              ) : (
-                <CountDown
-                  id={timeID}
-                  until={time}
-                  onFinish={this.handleGameOver}
-                  onPress={() => alert('hello')}
-                  size={14}
-                  digitStyle={{backgroundColor: 'transparent', width: 20}}
-                  timeToShow={['M','S']}
-                  timeLabels={{}}
-                  showSeparator
-                  running={!gamePaused}
-                  onChange={this.handleTime}
-                />
-              )}
+        <Matrix 
+          shapes={shapesInMatrix}
+          renderShape={this.renderShape}
+          saveLocation={this.saveShapeLocation}
+          saveBorder={this.saveMatrixBorder}
+        />
 
-            </View>
-            <View style={style.subContainer}>
-              <Text style={style.time}>Score:</Text>
-              <Text style={style.score}>{score}</Text>
-            </View>
-          </View>
-          <View style={style.column1}>
-            <View style={style.subContainer}>
-              <Text style={style.time}>Level: {level}</Text>
-            </View>
-          </View>
-          <View style={style.column2}> 
-            <View style={[style.subContainer, style.subContainer2] }>
-              <TouchableOpacity style={style.pauseContainer} onPress={this.handlePause}>
-                <Image resizeMode="contain" style={style.pause} source={pauseImg} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
+        <Selection
+          shapes={shapesInSelection}
+          renderShape={this.renderShape}
+          grabbedShape={grabbedShape}
+        />
+
+        <Status 
+          won={won}
+          time={time}
+          score={score}
+          level={level}
+          timeID={timeID}
+          timeLeft={timeLeft}
+          gamePaused={gamePaused}
+          handleTime={this.handleTime}
+          handlePause={this.handlePause}
+          handleGameOver={this.handleGameOver}
+        />
       </View>
     )
   }

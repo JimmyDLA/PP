@@ -17,6 +17,7 @@ import {
 } from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Matrix } from '../../Components/organisms/Matrix';
 import { Selection } from '../../Components/organisms/Selection';
 import { Status } from '../../Components/organisms/Status';
@@ -73,46 +74,8 @@ class GameScreen extends React.Component {
       },
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
-        const { moveX, moveY } = gestureState;
-        const { shapesInfo, shapesFound, updateShapesFound} = this.props;
-        const {
-          grabbedShape,
-          matrixBorder,
-          yOffset,
-          score,
-        } = this.state;
-        shapesInfo.find(shape => {
-          if (
-            (moveX >= shape.x + matrixBorder) &&
-            (moveY >= shape.y + yOffset + matrixBorder) &&
-            (moveX <= shape.x + shape.width + matrixBorder) &&
-            (moveY <= shape.y + shape.height + yOffset + matrixBorder) &&
-            (shape.id === grabbedShape.id)
-          ) {
-            this.setState({ score: score + 1 });
-            const newShapesFound = [
-              ...shapesFound,
-              shape.id.toString(),
-            ];
-            updateShapesFound(newShapesFound);
-            //YOU WON!!
-            if (shapesFound.length === 5) {
-              this.points();
-              const { timeLeft } = this.state;
-              const { gameWon, level } = this.props;
-              const params = { 
-                score: score + 1, 
-                level: level + 1,
-                timeLeft,
-                won: true
-              }
-              gameWon(params);
-            }
-          }
-        })
-          this.setState({ isGrabbing: false });
-          this.setState({ grabbedShape: {} });
-        // }
+ 
+        this.handleRelease(gestureState)
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
       },
@@ -146,6 +109,54 @@ class GameScreen extends React.Component {
     const addPoints = setInterval(addOne, 100);
   }
 
+  handleRelease = (gestureState) => {
+    const { moveX, moveY } = gestureState;
+    const { 
+      shapesInfo, 
+      shapesFound, 
+      shapesInMatrix,
+      updateShapesFound,
+    } = this.props;
+    const {
+      grabbedShape,
+      matrixBorder,
+      yOffset,
+      score,
+    } = this.state;
+
+    shapesInfo.find(shape => {
+      if (
+        (moveX >= shape.x + matrixBorder) &&
+        (moveY >= shape.y + yOffset + matrixBorder) &&
+        (moveX <= shape.x + shape.width + matrixBorder) &&
+        (moveY <= shape.y + shape.height + yOffset + matrixBorder) &&
+        (shape.id === grabbedShape.id)
+      ) {
+        this.setState({ score: score + 1 });
+        const newShapesFound = [
+          ...shapesFound,
+          shape.id.toString(),
+        ];
+        updateShapesFound(newShapesFound);
+        //YOU WON!!
+        if (shapesFound.length === shapesInMatrix.length - 1) {
+          this.points();
+          const { timeLeft } = this.state;
+          const { gameWon, level } = this.props;
+          const params = { 
+            score: score + 1, 
+            level: level + 1,
+            timeLeft,
+            won: true
+          }
+          gameWon(params);
+        }
+      }
+    })
+      this.setState({ isGrabbing: false });
+      this.setState({ grabbedShape: {} });
+  }
+
   handleGetShapes = () => {
     const { updateShapesObject } = this.props;
     const objectShapes = {
@@ -166,29 +177,31 @@ class GameScreen extends React.Component {
     gameOver(true);
   }
 
-  saveShapeLocation = (e, shape, id) => {
-    // debugger
-    console.log('save shape ID: ',id,)
-    const { updateShapesInfo } = this.props;
-    const { shapesInfo } = this.state;
+  saveShapeLocation = e => {
+    const { updateShapesInfo, shapesInMatrix } = this.props;
     const {layout: {x, y, width, height} } = e.nativeEvent;
     const {style: { borderWidth } } = e._targetInst.memoizedProps
-    if (shape.id === 1) {
-      this.setState({ shapeBorder: borderWidth });
-    }
-    const newShapesInfo = [
-      ...shapesInfo,
-      { x, y, width, height, ...shape}
-    ];
+    this.setState({ shapeBorder: borderWidth });
 
-    this.setState({ shapesInfo: newShapesInfo });
+    let counter = -1
 
-    if (newShapesInfo.length === 25) {
-      console.log('SAVED25')
+    const newShapesInfo = shapesInMatrix.map((shape, i) => {
+      const row = i % 5
+      if (row === 0) {
+        counter += 1
+      }
 
-      updateShapesInfo(newShapesInfo);
-      this.setState({ shapesInfo: []});
-    }
+        return (
+          { 
+            x: x + (row * width), 
+            y: y + (counter * height), 
+            height,
+            width,
+            ...shape,
+          }
+        );
+    });
+    updateShapesInfo(newShapesInfo);
   }
 
   saveMatrixBorder = (e) => {
@@ -197,27 +210,9 @@ class GameScreen extends React.Component {
     this.setState({ matrixBorder: borderWidth, yOffset: y });
   }
 
-  renderInnerMatrix = () => {
-    const {shapesInMatrix } = this.props;
-
-    const x = shapesInMatrix.map((shape, arr) => {
-                console.log('render ', 'map ID: ', shape.id)
-      return (
-      <View
-        onLayout={(e) => this.saveShapeLocation(e, shape, shape.id)}
-        key={`${shape.name}${shape.id}`} 
-        style={style.shapeContainer}
-      >
-        {this.renderShape(shape, shape.id, true)}
-      </View>
-    )});
-    return x;
-  }
-
   renderShape = ( shape, i, hidden ) => {
     const { shapesFound } = this.props;
     const found = shapesFound.find(id => id == shape.id);
-
     if (!found && !hidden) {
       return (
         <View
@@ -269,6 +264,7 @@ class GameScreen extends React.Component {
       score,
     } = this.state;
 
+    console.log('render')
     return (
       <View style={style.container}>
         {isGrabbing && (

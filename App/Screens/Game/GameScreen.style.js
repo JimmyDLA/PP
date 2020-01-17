@@ -1,6 +1,4 @@
 import { StyleSheet } from 'react-native'
-import Fonts from 'App/Theme/Fonts'
-import ApplicationStyles from 'App/Theme/ApplicationStyles'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -18,14 +16,12 @@ export const style = StyleSheet.create({
     borderColor: 'black',
   },
   innerMatrix: {
-    // padding: 5, 
     height: '100%', 
     width: '100%', 
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
     alignItems: 'center',
-
   },
   selectionContainer: { 
     height: '42%',

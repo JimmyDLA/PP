@@ -53,12 +53,14 @@ class GameModal extends React.Component {
 
     const time = 90 - level;
     const timeID = this.makeid(5);
+    // updateShapesInfo([])
     updateShapesFound([]);
-    updateShapesInfo([])
     gameTime({ time, timeID })
     resumeGame(false);
     gameWon({ won: false });
     removeModal();
+    this.handleGetShapes();
+
   }
 
   handleRestart = () => {
@@ -69,13 +71,11 @@ class GameModal extends React.Component {
     }
     updateShapesObject(emptyObject);
     this.handleReset();
-    this.handleGetShapes();
   }
 
   handleNextLevel = () => {
-    const { gameWon } = this.props;
-
-    gameWon({ won: false });
+    const { updateShapesInfo } = this.props;
+    updateShapesInfo([])
     this.handleRestart();
   }
 

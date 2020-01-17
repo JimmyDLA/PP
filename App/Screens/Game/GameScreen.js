@@ -74,7 +74,6 @@ class GameScreen extends React.Component {
       },
       onPanResponderTerminationRequest: (evt, gestureState) => false,
       onPanResponderRelease: (evt, gestureState) => {
- 
         this.handleRelease(gestureState)
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
@@ -139,7 +138,7 @@ class GameScreen extends React.Component {
         ];
         updateShapesFound(newShapesFound);
         //YOU WON!!
-        if (shapesFound.length === shapesInMatrix.length - 1) {
+        if (shapesFound.length === 3) {
           this.points();
           const { timeLeft } = this.state;
           const { gameWon, level } = this.props;

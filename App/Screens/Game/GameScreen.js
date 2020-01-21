@@ -148,7 +148,7 @@ class GameScreen extends React.Component {
         ];
         updateShapesFound(newShapesFound);
         //YOU WON!!
-        if (shapesFound.length === 2) {
+        if (shapesFound.length === 24) {
           const { gameWon, level } = this.props;
           const params = { 
             score: score + 1, 

@@ -5,7 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export const style = StyleSheet.create({
   container: { 
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(230,230,230)',
   },
@@ -31,10 +31,8 @@ export const style = StyleSheet.create({
     flexWrap: 'wrap',
   },
   statsContainer: { 
-    height: '12%',
+    height: '7%',
     width: '100%',
-    borderColor: 'black',
-    borderTopWidth: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },

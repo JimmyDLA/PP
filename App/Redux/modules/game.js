@@ -18,7 +18,7 @@ export const initialState = {
   gamePaused: false,
   level: 1,
   won: false,
-  time: 90,
+  time: 60,
   timeID: '',
   score: 0,
   timeLeft: 0,

@@ -27,7 +27,7 @@ export const style = StyleSheet.create({
     fontSize: 16,
   },
   logo: {
-    backgroundColor: 'rgb(230, 126, 34)',
+    backgroundColor: 'rgb(170, 170, 170)',
     height: 300,
     justifyContent: 'center',
     width: 300,

@@ -56,7 +56,7 @@ class GameModal extends React.Component {
     updateShapesFound([]);
     gameTime({ time, timeID })
     resumeGame(false);
-    gameWon({ won: false });
+    gameWon({ won: false, gameEnded: false });
     removeModal();
     this.handleGetShapes();
 

@@ -5,7 +5,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export const style = StyleSheet.create({
   container: { 
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgb(230,230,230)',
   },
@@ -31,10 +31,8 @@ export const style = StyleSheet.create({
     flexWrap: 'wrap',
   },
   statsContainer: { 
-    height: '12%',
+    height: '7%',
     width: '100%',
-    borderColor: 'black',
-    borderTopWidth: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -61,10 +59,10 @@ export const style = StyleSheet.create({
   },
   subContainer: { 
     justifyContent: 'flex-start',
-    alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
     paddingLeft: 10,
+    paddingBottom: 5,
   },
   subContainer2: { 
     justifyContent: 'flex-end', 
@@ -86,16 +84,20 @@ export const style = StyleSheet.create({
   pause: { 
     width: 10,
   },
-  play: { 
-    height: 30,
-  },
-  column1: { 
-    marginTop: 5,
-  },
   column2: { 
     width: '33%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'flex-start'
+  },
+  column1: { 
+    width: '33%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  column0: { 
+    width: '33%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 })

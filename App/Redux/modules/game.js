@@ -18,7 +18,7 @@ export const initialState = {
   gamePaused: false,
   level: 1,
   won: false,
-  time: 90,
+  time: 60,
   timeID: '',
   score: 0,
   timeLeft: 0,
@@ -43,6 +43,8 @@ export const game = (state = initialState, action) => {
       return { ...state, ...data };
     case GAME_TIME:
       return { ...state, ...data  };
+    case GAME_QUIT:
+      return { ...state, ...data  };
     case GAME_RESUME:
       return { ...state, gamePaused: data };
     case SHAPES_INFO:
@@ -58,7 +60,7 @@ export const game = (state = initialState, action) => {
 
 // Action creators
 export const removeModal = () => ({ type: REMOVE_MODAL });
-export const quitGame = () => ({ type: GAME_QUIT });
+export const quitGame = data => ({ type: GAME_QUIT, data });
 export const startGame = data => ({ type: START_GAME, data });
 export const pauseGame = data => ({ type: GAME_PAUSE, data });
 export const resumeGame = data => ({ type: GAME_RESUME, data });

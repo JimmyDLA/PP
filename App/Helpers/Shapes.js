@@ -80,7 +80,7 @@ export const shuffle = array => {
 }
 
 export const getShapes = () => {
-  const name = [
+  const names = [
     'square', 
     'circle', 
     'star',
@@ -163,11 +163,10 @@ export const getShapes = () => {
     xHiddenImg,
   ];
 
-  const shapesArr = [];
-  for (let i = 0; i < name.length ; i++) {
+  const shapesArr = names.map((name, i) => {
     const item = new Shape(i, name[i], shapeImgs[i], shapeHiddenImgs[i]);
-    shapesArr.push(item);
-  }
+    return item;
+  });
 
   return shuffle(shapesArr);
 }

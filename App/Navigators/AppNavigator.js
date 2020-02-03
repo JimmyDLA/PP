@@ -19,9 +19,12 @@ const StackNavigator = createStackNavigator(
     GameScreen: GameScreen,
   },
   {
+    // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
     // By default the application will show the splash screen
     initialRouteName: 'MainScreen',
-    // See https://reactnavigation.org/docs/en/stack-navigator.html#stacknavigatorconfig
+    defaultNavigationOptions: {
+      gesturesEnabled: false,
+    },
     headerMode: 'none',
   }
 )

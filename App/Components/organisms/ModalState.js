@@ -66,7 +66,7 @@ export class ModalState extends React.Component {
         <Text style={style.bodyText}>Game: 25</Text>
         <Text style={style.bodyText}>Time Left: {timeLeft}</Text>
         <Text style={style.bodyText}>Bonus: 0</Text>
-        <Text style={style.bodyText}>Total Score: {score+timeLeft}</Text>
+        <Text style={style.bodyText}>Total Score: {score}</Text>
         <Button
           label="Next Level"
           onPress={this.handleNextLevel}

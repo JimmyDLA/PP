@@ -80,10 +80,11 @@ class GameModal extends React.Component {
 
   handleQuit = () => { 
     const level = 1;
+    const score = 0;
     const { quitGame } = this.props;
 
     this.handleReset();
-    quitGame({ level });
+    quitGame({ level, score });
   }
 
   handleGetShapes = () => {

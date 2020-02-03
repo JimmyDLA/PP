@@ -59,10 +59,10 @@ export const style = StyleSheet.create({
   },
   subContainer: { 
     justifyContent: 'flex-start',
-    alignItems: 'center',
     flexDirection: 'row',
     width: '100%',
     paddingLeft: 10,
+    paddingBottom: 5,
   },
   subContainer2: { 
     justifyContent: 'flex-end', 
@@ -84,16 +84,20 @@ export const style = StyleSheet.create({
   pause: { 
     width: 10,
   },
-  play: { 
-    height: 30,
-  },
-  column1: { 
-    marginTop: 5,
-  },
   column2: { 
     width: '33%',
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'flex-start'
+  },
+  column1: { 
+    width: '33%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  column0: { 
+    width: '33%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   },
 })

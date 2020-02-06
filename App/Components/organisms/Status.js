@@ -13,6 +13,7 @@ export const Status = React.forwardRef((props, ref) => {
   gamePaused,
   handlePause,
   handleGameOver,
+  isFrozen,
   } = props;
   
   return(
@@ -37,7 +38,7 @@ export const Status = React.forwardRef((props, ref) => {
           timeToShow={['M','S']}
           timeLabels={{}}
           showSeparator
-          running={!gamePaused}
+          running={!gamePaused && !isFrozen }
         />
       </View>
       <View style={style.column2}> 

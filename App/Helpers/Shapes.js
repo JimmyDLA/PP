@@ -164,7 +164,7 @@ export const getShapes = () => {
   ];
 
   const shapesArr = names.map((name, i) => {
-    const item = new Shape(i, name[i], shapeImgs[i], shapeHiddenImgs[i]);
+    const item = new Shape(i, name, shapeImgs[i], shapeHiddenImgs[i]);
     return item;
   });
 

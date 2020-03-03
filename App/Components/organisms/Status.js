@@ -13,19 +13,25 @@ export const Status = React.forwardRef((props, ref) => {
   gamePaused,
   handlePause,
   handleGameOver,
+  isFrozen,
+  isAddTime,
+  showPowerupTime
   } = props;
   
   return(
     <View style={style.statsContainer}>
+
       <View style={style.column0}>
         <View style={style.subContainer}>
           <Text style={style.time}>Level: {level}</Text>
         </View>
+
         <View style={style.subContainer}>
           <Text style={style.time}>Score:</Text>
           <Text style={style.score}>{score}</Text>
         </View>
       </View>
+
       <View style={style.column1}>
         <CountDown
           id={timeID}
@@ -37,9 +43,15 @@ export const Status = React.forwardRef((props, ref) => {
           timeToShow={['M','S']}
           timeLabels={{}}
           showSeparator
-          running={!gamePaused}
+          running={!gamePaused && !isFrozen }
         />
+        {showPowerupTime && (
+          <Text style={[style.timeIndicator, {color: isAddTime ? 'rgb(0,100,0)' : 'rgb(220,20,60)' }]}>
+            {isAddTime ? '+5' : '-5'}
+          </Text>
+        )}
       </View>
+
       <View style={style.column2}> 
         <View style={[style.subContainer, style.subContainer2] }>
           <TouchableOpacity style={style.pauseContainer} onPress={handlePause}>

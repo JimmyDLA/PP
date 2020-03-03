@@ -100,4 +100,10 @@ export const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+  timeIndicator: { 
+    position: 'absolute',
+    right: -15,
+    fontSize: 25,
+    fontWeight: 'bold',
+  },
 })

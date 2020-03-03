@@ -34,9 +34,11 @@ class GameScreen extends React.Component {
       matrixBorder: 0,
       shapeBorder: 0,
       shapesInfo: [],
-      frozen: false,
+      frozen: true,
       isPowerOn: false,
       powerUpId: null,
+      powerupTime: false,
+      sectionColor: null,
       powerUp: {
         color: null,
         square: null,
@@ -45,7 +47,7 @@ class GameScreen extends React.Component {
       timeLeft: 0,
       yOffset: 0,
       score: 0,
-
+      addTime: null,
     };
     
     this.inverval = setInterval(() => {
@@ -176,7 +178,7 @@ class GameScreen extends React.Component {
             handleShapeFound(shape);
             if (square) {
               if (grabbedShape.id == shapesInMatrix[square].id) {
-                this.handlePowerUp(color)
+                this.handlePowerUp(color, shape)
               }
             }
           }
@@ -210,45 +212,59 @@ class GameScreen extends React.Component {
     gameOver(true);
   }
 
-  handlePowerUp = color => {
+  handlePowerUp = (color, shape) => {
     if (color === 'rgb(220,20,60)') {
-      console.warn('red')
+      this.setState({ addTime: false, powerupTime: true });
+      setTimeout(() => {
+        this.setState({ addTime: null, powerupTime: false });
+      }, 2000);
       const { seconds } = this.time.current.getTimeLeft();
       this.time.current.updateTimer(seconds - 5);
     }
 
     if (color === 'rgb(0,100,0)') {
-      console.warn('green')
+      this.setState({ addTime: true, powerupTime: true });
+      setTimeout(() => {
+        this.setState({ addTime: null, powerupTime: false });
+      }, 2000);
       const time = this.time.current.state.until;
-      this.time.current.updateTimer(time + 3);
+      this.time.current.updateTimer(time + 5);
     }
 
     if (color === 'rgb(65,105,225)') {
-      console.warn('blue')
-      this.setState({ isPowerOn: true, frozen: true });
+      this.setState({ isPowerOn: true, frozen: true, sectionColor: 'rgb(65,105,225)' });
       setTimeout(() => {
-        this.setState({ isPowerOn:false, frozen: false });
-      }, 4000);
+        this.setState({ isPowerOn:false, frozen: false, sectionColor: null });
+      }, 5000);
     }
 
     if (color === 'rgb(102,51,153)') {
-      console.warn('purple')
+
       const { shapesFound, shapesInMatrix, updateShapesFound } = this.props;
-      const availableShapes = shapesFound.filter(item => !shapesInMatrix.include(item));
+      const allIdShapes = shapesInMatrix.map( shape => shape.id);
+      const availableShapes = allIdShapes.filter(item => {
+        return !shapesFound.includes(item)
+      });
+      availableShapes.forEach((element, i) => {
+        if (element === shape.id) {
+          availableShapes.splice(i, 1);
+        }
+      })
       const n = Math.floor(Math.random() * availableShapes.length);
+
       const newShapesFound = [
         ...shapesFound,
-        availableShapes[n],
+        shape.id.toString(),
+        availableShapes[n].toString(),
       ];
       updateShapesFound(newShapesFound);
     }
 
     if (color === 'rgb(255,215,0)') {
-      console.warn('yellow')
-      this.setState({ wildcard: true });
+      this.setState({ wildcard: true, sectionColor: 'rgb(255,215,0)' });
       setTimeout(() => {
-        this.setState({ wildcard: false });
-      }, 4000);
+        this.setState({ wildcard: false, sectionColor: null });
+      }, 5000);
     }
   }
 
@@ -262,7 +278,7 @@ class GameScreen extends React.Component {
         'rgb(102,51,153)',
         'rgb(255,215,0)',
       ];
-      const n = Math.floor(Math.random() * 5);
+      const n = Math.floor(Math.random() * 3);
       const id = Math.floor(Math.random() * 25);
       const newPowerUp = {
         square: id,
@@ -325,7 +341,6 @@ class GameScreen extends React.Component {
   }
 
   handleUpdatePowerId = e => {
-    debugger
     this.setState({ powerUpId: e })
   }
 
@@ -379,7 +394,10 @@ class GameScreen extends React.Component {
 
     const { 
       grabbedShape,
+      sectionColor,
+      powerupTime,
       isGrabbing,
+      addTime,
       powerUp,
       frozen,
     } = this.state;
@@ -413,7 +431,9 @@ class GameScreen extends React.Component {
           level={level}
           timeID={timeID}
           isFrozen={frozen}
+          isAddTime={addTime}
           gamePaused={gamePaused}
+          showPowerupTime={powerupTime}
           handlePause={this.handlePause}
           handleGameOver={this.handleGameOver}
           ref={this.time}
@@ -433,6 +453,7 @@ class GameScreen extends React.Component {
           shapes={shapesInSelection}
           renderShape={this.renderShape}
           grabbedShape={grabbedShape}
+          sectionColor={sectionColor}
         />
       </View>
     )

@@ -13,7 +13,7 @@ export const Matrix = ({ 
           <Shape 
             i={i}
             shape={shape}
-            isPowerup={i === square}
+            isPowerup={shape.id == parseInt(square)}
             renderShape={renderShape}
             saveLocation={saveLocation}
             backgroundColor={backgroundColor}

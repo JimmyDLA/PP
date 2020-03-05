@@ -25,6 +25,7 @@ export const initialState = {
   shapesInfo: [],
   shapesInMatrix: [],
   shapesInSelection: [],
+  availablePowerupSquares: [],
   shapesFound: [],
 };
 
@@ -50,7 +51,12 @@ export const game = (state = initialState, action) => {
     case SHAPES_INFO:
       return { ...state, shapesInfo: data };
     case SHAPES_OBJECT:
-      return { ...state, shapesInSelection: data.shapesInSelection, shapesInMatrix: data.shapesInMatrix };
+      return { 
+        ...state, 
+        shapesInSelection: data.shapesInSelection, 
+        shapesInMatrix: data.shapesInMatrix,
+        availablePowerupSquares: data.shapesInMatrix,
+      };
     case SHAPES_FOUND:
       return { ...state, shapesFound: data };  
       default:

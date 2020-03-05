@@ -177,7 +177,7 @@ class GameScreen extends React.Component {
             const { powerUp: { square, color } } = this.state;
             handleShapeFound(shape);
             if (square) {
-              if (grabbedShape.id == shapesInMatrix[square].id) {
+              if (grabbedShape.id == square) {
                 this.handlePowerUp(color, shape)
               }
             }
@@ -241,10 +241,9 @@ class GameScreen extends React.Component {
     if (color === 'rgb(102,51,153)') {
 
       const { shapesFound, shapesInMatrix, updateShapesFound } = this.props;
-      const allIdShapes = shapesInMatrix.map( shape => shape.id);
-      const availableShapes = allIdShapes.filter(item => {
-        return !shapesFound.includes(item)
-      });
+      const allIdShapes = shapesInMatrix.map( shape => shape.id.toString());
+      const availableShapes = allIdShapes.filter(id => !shapesFound.includes(id));
+      // take out current shape grabbed
       availableShapes.forEach((element, i) => {
         if (element === shape.id) {
           availableShapes.splice(i, 1);
@@ -270,6 +269,10 @@ class GameScreen extends React.Component {
 
   handleLightUpPowerup = () => {
     const { powerUp } = this.state;
+    const { availablePowerupSquares, shapesFound } = this.props;
+    const allIdShapes = availablePowerupSquares.map( shape => shape.id);
+    const availableShapes = allIdShapes.filter(id => !shapesFound.includes(id.toString()));
+
     if (powerUp.square === null) {
       const colors = [
         'rgb(220,20,60)',
@@ -278,12 +281,14 @@ class GameScreen extends React.Component {
         'rgb(102,51,153)',
         'rgb(255,215,0)',
       ];
-      const n = Math.floor(Math.random() * 3);
-      const id = Math.floor(Math.random() * 25);
+
+      const n = Math.floor(Math.random() * 5);
+      const id = Math.floor(Math.random() * availableShapes.length);
       const newPowerUp = {
-        square: id,
+        square: availableShapes[id].toString(),
         color: colors[n],
       };
+      
       this.setState({ powerUp: newPowerUp })
     } else {
       const newPowerUp = {
@@ -462,6 +467,7 @@ class GameScreen extends React.Component {
 
 const mapStateToProps = ({
   game: { 
+    availablePowerupSquares,
     shapesInSelection,
     shapesInMatrix,
     shapesFound,
@@ -475,6 +481,7 @@ const mapStateToProps = ({
     won,
   },
 }) => ({
+  availablePowerupSquares,
   shapesInSelection,
   shapesInMatrix,
   shapesFound,

@@ -17,7 +17,6 @@ import {
 } from 'App/Redux/modules/game';
 import { getShapes } from '../../Helpers/Shapes'
 import { style } from './GameScreen.style'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { Matrix } from '../../Components/organisms/Matrix';
 import { Selection } from '../../Components/organisms/Selection';
 import { Status } from '../../Components/organisms/Status';
@@ -34,7 +33,7 @@ class GameScreen extends React.Component {
       matrixBorder: 0,
       shapeBorder: 0,
       shapesInfo: [],
-      frozen: true,
+      frozen: false,
       isPowerOn: false,
       powerUpId: null,
       powerupTime: false,
@@ -50,7 +49,7 @@ class GameScreen extends React.Component {
       addTime: null,
     };
     
-    this.inverval = setInterval(() => {
+    this.interval = setInterval(() => {
       this.handleLightUpPowerup();
     }, 5000);
 
@@ -159,7 +158,6 @@ class GameScreen extends React.Component {
           gamePaused: true,
         }
         gameWon(params);
-        // this.points();
       }
     }
 
@@ -201,13 +199,13 @@ class GameScreen extends React.Component {
 
   handlePause = () => {
     const { pauseGame } = this.props;
-    clearInterval(this.inverval);
+    clearInterval(this.interval);
     pauseGame(true);
   }
 
   handleGameOver = () => {
     const { gameOver } = this.props;
-    clearInterval(this.inverval);
+    clearInterval(this.interval);
     this.setState({ score: 0, isGrabbing: false });
     gameOver(true);
   }
@@ -273,7 +271,15 @@ class GameScreen extends React.Component {
     const allIdShapes = availablePowerupSquares.map( shape => shape.id);
     const availableShapes = allIdShapes.filter(id => !shapesFound.includes(id.toString()));
 
-    if (powerUp.square === null) {
+    if (shapesFound.length >= 20) {
+      clearInterval(this.interval);
+      this.interval = false;
+      const newPowerUp = {
+        square: null,
+        color: null,
+      };
+      this.setState({ powerUp: newPowerUp });
+    } else if (powerUp.square === null) {
       const colors = [
         'rgb(220,20,60)',
         'rgb(65,105,225)',
@@ -303,10 +309,10 @@ class GameScreen extends React.Component {
     const { gamePaused, gameEnded, won } = this.props;
 
     if (gamePaused || gameEnded || won) {
-      clearInterval(this.inverval);
-      this.inverval = null;
-    } else if(this.inverval === null) {
-      this.inverval = setInterval(() => {
+      clearInterval(this.interval);
+      this.interval = null;
+    } else if(this.interval === null) {
+      this.interval = setInterval(() => {
         this.handleLightUpPowerup();
       }, 5000);
     }
@@ -447,11 +453,11 @@ class GameScreen extends React.Component {
         <Matrix 
           square={powerUp.square}
           shapes={shapesInMatrix}
+          backgroundColor={powerUp.color}
           renderShape={this.renderShape}
           saveBorder={this.saveMatrixBorder}
           saveLocation={this.saveShapeLocation}
           onUpdateId={this.handleUpdatePowerId}
-          backgroundColor={powerUp.color}
         />
 
         <Selection

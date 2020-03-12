@@ -40,6 +40,8 @@ export const Status = React.forwardRef((props, ref) => {
           onFinish={handleGameOver}
           size={25}
           digitStyle={{backgroundColor: 'transparent', width: 40}}
+          digitTxtStyle={{ color: isFrozen ? 'rgb(65,105,225)' : 'rgb(0,0,0)' }}
+          separatorStyle={{ color: isFrozen ? 'rgb(65,105,225)' : 'rgb(0,0,0)' }}
           timeToShow={['M','S']}
           timeLabels={{}}
           showSeparator

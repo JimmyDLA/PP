@@ -51,7 +51,7 @@ class GameModal extends React.Component {
       level,
     } = this.props;
 
-    const time = 60 - level;
+    const time = 60 - (level * 2);
     const timeID = this.makeid(5);
     updateShapesFound([]);
     gameTime({ time, timeID })

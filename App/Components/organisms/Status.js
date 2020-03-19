@@ -6,16 +6,16 @@ import { style } from 'App/Screens/Game/GameScreen.style';
 
 export const Status = React.forwardRef((props, ref) => {
   const {
-  time,
-  score,
-  level,
-  timeID,
-  gamePaused,
-  handlePause,
-  handleGameOver,
-  isFrozen,
-  isAddTime,
-  showPowerupTime
+    time,
+    score,
+    level,
+    timeID,
+    gamePaused,
+    handlePause,
+    handleGameOver,
+    isFrozen,
+    isAddTime,
+    showPowerupTime
   } = props;
   
   return(

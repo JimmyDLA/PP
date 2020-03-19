@@ -7,6 +7,7 @@ import {
   GAME_QUIT,
   GAME_WIN,
   REMOVE_MODAL,
+  GAME_ABOUT_TO_START,
 } from '../Redux/modules/game';
 
 /**
@@ -20,31 +21,25 @@ export function* doStartGame() {
   }
 };
 
-export function* doGameWin(action) {
+export function* doGameWin() {
   try {
-    const { data } = action;
-    const won = { won: data };
-    NavigationService.navigate('Modal', won);
+    NavigationService.navigate('Modal');
   } catch (error) {
     console.warn(error);
   }
 };
 
-export function* doGamePause(action) {
+export function* doGamePause() {
   try {
-    const { data } = action;
-    const paused = { paused: data };
-    NavigationService.navigate('Modal', paused);
+    NavigationService.navigate('Modal');
   } catch (error) {
     console.warn(error);
   }
 };
 
-export function* doGameOver(action) {
+export function* doGameOver() {
   try {
-    const { data } = action;
-    const lost = { lost: data };
-    NavigationService.navigate('Modal', lost);
+    NavigationService.navigate('Modal');
   } catch (error) {
     console.warn(error);
   }
@@ -66,9 +61,18 @@ export function* doQuit() {
   }
 }
 
+function* doAboutToStart() {
+  try {
+    NavigationService.navigate('Modal');
+  } catch (error) {
+    
+  }
+}
+
 export function* watchGame() {
   yield takeEvery(START_GAME, doStartGame);
   yield takeEvery(GAME_PAUSE, doGamePause);
+  yield takeEvery(GAME_ABOUT_TO_START, doAboutToStart);
   yield takeEvery(GAME_OVER, doGameOver);
   yield takeEvery(REMOVE_MODAL, doRemoveModal);
   yield takeEvery(GAME_QUIT, doQuit);

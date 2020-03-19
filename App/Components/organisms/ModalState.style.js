@@ -19,4 +19,9 @@ export const style = StyleSheet.create({
   bodyText: { 
     fontSize: 18,
   },
+  countDown: { 
+    color: 'white',
+    fontSize: 50,
+    fontWeight: '800',
+  },
 });

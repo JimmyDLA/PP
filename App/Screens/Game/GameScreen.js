@@ -11,6 +11,7 @@ import {
   pauseGame, 
   gameWon,
   gameTime,
+  aboutToStart,
   updateShapesObject,
   updateShapesFound,
   updateShapesInfo,
@@ -108,6 +109,8 @@ class GameScreen extends React.Component {
   }
 
   componentDidMount() {
+    const { aboutToStart } = this.props;
+    aboutToStart({ gameAboutToStart: true });
     this.handleGetShapes();
   }
 
@@ -505,6 +508,7 @@ const mapDispatchToProps = {
   updateShapesObject,
   updateShapesFound,
   updateShapesInfo,
+  aboutToStart,
   pauseGame,
   gameTime,
   gameOver,

@@ -10,12 +10,14 @@ export const GAME_TIME = 'pp/game/GAME_TIME';
 export const SHAPES_INFO = 'pp/game/SHAPES_INFO';
 export const SHAPES_OBJECT = 'pp/game/SHAPES_OBJECT';
 export const SHAPES_FOUND = 'pp/game/SHAPES_FOUND';
+export const GAME_ABOUT_TO_START = 'pp/game/GAME_ABOUT_TO_START';
 
 // Initial State
 export const initialState = {
   gameStarted: false,
   gameEnded: false,
-  gamePaused: false,
+  gamePaused: true,
+  gameAboutToStart: false,
   level: 1,
   won: false,
   time: 60,
@@ -41,6 +43,8 @@ export const game = (state = initialState, action) => {
     case GAME_PAUSE:
       return { ...state, gamePaused: data };
     case GAME_WIN:
+      return { ...state, ...data };
+    case GAME_ABOUT_TO_START:
       return { ...state, ...data };
     case GAME_TIME:
       return { ...state, ...data  };
@@ -72,6 +76,7 @@ export const pauseGame = data => ({ type: GAME_PAUSE, data });
 export const resumeGame = data => ({ type: GAME_RESUME, data });
 export const gameOver = data => ({ type: GAME_OVER, data });
 export const gameWon = data => ({ type: GAME_WIN, data });
+export const aboutToStart = data => ({ type: GAME_ABOUT_TO_START, data });
 export const gameTime = data => ({ type: GAME_TIME, data });
 export const updateShapesInfo = data => ({ type: SHAPES_INFO, data });
 export const updateShapesObject = data => ({ type: SHAPES_OBJECT, data });

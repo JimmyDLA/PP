@@ -1,9 +1,10 @@
 import React from 'react'
 import {
   View,
-  Animated,
-  PanResponder,
   Image,
+  Animated,
+  Vibration,
+  PanResponder,
 } from 'react-native'
 import { connect } from 'react-redux'
 import { 
@@ -48,6 +49,7 @@ class GameScreen extends React.Component {
       yOffset: 0,
       score: 0,
       addTime: null,
+      bonus: 0,
     };
     
     this.interval = setInterval(() => {
@@ -151,15 +153,18 @@ class GameScreen extends React.Component {
 
       //YOU WON!!
       if (shapesFound.length === 24) {
+        const { bonus } = this.state;
         const { gameWon, level, score } = this.props;
         const { seconds } = this.time.current.getTimeLeft();
         const params = { 
-          score: shapesFound.length + score + seconds + 1, 
+          score: shapesFound.length + bonus + score + seconds + 1, 
+          bonus,
           level: level + 1,
           timeLeft: seconds,
           won: true,
           gamePaused: true,
         }
+        this.setState({ bonus: 0 });
         gameWon(params);
       }
     }
@@ -177,6 +182,7 @@ class GameScreen extends React.Component {
           if (shape.id === grabbedShape.id) {
             const { powerUp: { square, color } } = this.state;
             handleShapeFound(shape);
+
             if (square) {
               if (grabbedShape.id == square) {
                 this.handlePowerUp(color, shape)
@@ -208,12 +214,27 @@ class GameScreen extends React.Component {
 
   handleGameOver = () => {
     const { gameOver } = this.props;
+    Vibration.vibrate([0, 1], true)
     clearInterval(this.interval);
-    this.setState({ score: 0, isGrabbing: false });
+    this.setState({ score: 0, isGrabbing: false, bonus: 0 });
     gameOver(true);
+    
+    setTimeout(() => {
+      Vibration.cancel();
+    }, 5000);
   }
 
   handlePowerUp = (color, shape) => {
+    setTimeout(() => {
+      this.setState({ powerUp: { color: null, square: null }});      
+    }, 300);
+    clearInterval(this.interval);
+    this.interval = null;
+
+    const { bonus } = this.state;
+
+    this.setState({ bonus: bonus + 1 })
+
     if (color === 'rgb(220,20,60)') {
       this.setState({ addTime: false, powerupTime: true });
       setTimeout(() => {

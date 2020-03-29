@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Vibration } from 'react-native';
 import { WhiteContainer } from '../atoms/WhiteContainer';
 import { Button } from '../molecules/Button';
 import { style } from './ModalState.style';
@@ -24,13 +24,14 @@ export class ModalState extends React.Component {
 
   //Functions
   handleResume = () => {
-    const { onResume } = this.props;
+    const { onResume, onRemoveModal } = this.props;
     onResume();
   }
 
   handleRestart = () => {
     const { onRestart } = this.props;
     onRestart();
+    Vibration.cancel();
   }
 
   handleNextLevel = () => {
@@ -41,6 +42,7 @@ export class ModalState extends React.Component {
   handleQuit = () => {
     const { onQuit, onRestart } = this.props;
     onQuit();
+    Vibration.cancel();
   }
 
   handleCountDown = () => {
@@ -77,7 +79,7 @@ export class ModalState extends React.Component {
   }
 
   renderWin = () => {
-    const { timeLeft, score } = this.props;
+    const { timeLeft, score, bonus } = this.props;
     return (
       <WhiteContainer>
       <View style={style.header}>
@@ -86,7 +88,7 @@ export class ModalState extends React.Component {
       <View style={style.body}>
         <Text style={style.bodyText}>Game: 25</Text>
         <Text style={style.bodyText}>Time Left: {timeLeft}</Text>
-        <Text style={style.bodyText}>Bonus: 0</Text>
+        <Text style={style.bodyText}>Bonus: {bonus}</Text>
         <Text style={style.bodyText}>Total Score: {score}</Text>
         <Button
           label="Next Level"

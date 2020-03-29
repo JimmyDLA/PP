@@ -11,7 +11,7 @@ import {
   updateShapesInfo,
   aboutToStart,
   removeModal, 
-  resumeGame,
+  pauseGame,
   quitGame,
   gameTime,
   gameWon,
@@ -36,26 +36,27 @@ class GameModal extends React.Component {
   }
 
   handleResume = () => {
-    const { removeModal, resumeGame } = this.props;
+    const { removeModal, pauseGame } = this.props;
+    pauseGame(false);
     removeModal();
-    resumeGame(false);
   }
 
-  handleReset = () => {
+  handleReset = isPaused => {
     const { 
       updateShapesFound, 
       removeModal, 
-      resumeGame,
+      pauseGame,
       gameTime,
       gameWon,
       level,
     } = this.props;
 
-    const time = 60 - (level * 2);
+    const isLevel1 = level === 1;
+    const time = isLevel1 ? 60 : 60 - (level * 2);
     const timeID = this.makeid(5);
     updateShapesFound([]);
     gameTime({ time, timeID })
-    resumeGame(true);
+    pauseGame(isPaused);
     gameWon({ won: false, gameEnded: false });
     removeModal();
     this.handleGetShapes();
@@ -69,7 +70,7 @@ class GameModal extends React.Component {
       shapesInSelection: [],
     }
     updateShapesObject(emptyObject);
-    this.handleReset();
+    this.handleReset(false);
   }
 
   handleNextLevel = () => {
@@ -83,7 +84,7 @@ class GameModal extends React.Component {
     const score = 0;
     const { quitGame } = this.props;
 
-    this.handleReset();
+    this.handleReset(true);
     quitGame({ level, score });
   }
 
@@ -99,7 +100,8 @@ class GameModal extends React.Component {
   render() {
     const { 
       won,
-      score, 
+      bonus,
+      score,
       timeLeft, 
       gameEnded,
       gamePaused,
@@ -127,6 +129,7 @@ class GameModal extends React.Component {
           timeLeft={timeLeft}
           params={params}
           score={score}
+          bonus={bonus}
         />
       </View>
     )
@@ -136,6 +139,7 @@ class GameModal extends React.Component {
 const mapStateToProps = ({
   game: {
     won,
+    bonus,
     score,
     level,
     timeLeft,
@@ -145,6 +149,7 @@ const mapStateToProps = ({
   }
 }) => ({
   won,
+  bonus,
   score,
   level,
   timeLeft,
@@ -159,7 +164,7 @@ const mapDispatchToProps = {
   updateShapesInfo,
   aboutToStart,
   removeModal,
-  resumeGame,
+  pauseGame,
   quitGame,
   gameTime,
   gameWon,

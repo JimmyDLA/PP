@@ -43,6 +43,12 @@ export const style = StyleSheet.create({
   shapeImg: { 
     width: '100%',
   },
+  shapeImgHidden: { 
+    tintColor: 'rgb(0,0,0)'
+  },
+  shapeImgFound: { 
+    tintColor: 'rgb(190, 190, 190)'
+  },
   slopHit: { 
     width: '100%',
     height: '100%',

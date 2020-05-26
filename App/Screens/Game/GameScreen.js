@@ -228,11 +228,10 @@ class GameScreen extends React.Component {
     setTimeout(() => {
       this.setState({ powerUp: { color: null, square: null }});      
     }, 300);
-    clearInterval(this.interval);
-    this.interval = null;
 
     const { bonus } = this.state;
-
+    clearInterval(this.interval);
+    this.interval = null;
     this.setState({ bonus: bonus + 1 })
 
     if (color === 'rgb(220,20,60)') {
@@ -403,7 +402,7 @@ class GameScreen extends React.Component {
       return (
         <Image 
           key={`${shape.name}${i}`} 
-          style={[style.shapeImg]} 
+          style={[!hidden || found ? style.shapeImgHidden : style.shapeImgFound ]} 
           source={!hidden || found ? shape.activeImg : shape.inactiveImg} 
           shape={shape}
           resizeMode="contain"

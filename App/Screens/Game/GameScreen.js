@@ -314,12 +314,22 @@ class GameScreen extends React.Component {
 
       const n = Math.floor(Math.random() * 5);
       const id = Math.floor(Math.random() * availableShapes.length);
+      const timer = (Math.floor(Math.random() * 5)+ 1) * 1000;
       const newPowerUp = {
         square: availableShapes[id].toString(),
         color: colors[n],
       };
       
       this.setState({ powerUp: newPowerUp })
+
+      setTimeout(() => {
+        const newPowerUp = {
+          square: null,
+          color: null,
+        };
+        
+        this.setState({ powerUp: newPowerUp });
+      }, timer);
     } else {
       const newPowerUp = {
         square: null,
@@ -330,9 +340,10 @@ class GameScreen extends React.Component {
   }
 
   handleLightUpInterval = () => {
-    const { gamePaused, gameEnded, won } = this.props;
+    const { gamePaused, gameEnded, won, shapesFound } = this.props;
+    const isMostShapesFound = shapesFound.length >= 20; 
 
-    if (gamePaused || gameEnded || won) {
+    if (isMostShapesFound || gamePaused || gameEnded || won) {
       clearInterval(this.interval);
       this.interval = null;
     } else if(this.interval === null) {
@@ -467,7 +478,7 @@ class GameScreen extends React.Component {
           timeID={timeID}
           isFrozen={frozen}
           isAddTime={addTime}
-          gamePaused={gamePaused}
+          gamePaused={true}
           showPowerupTime={powerupTime}
           handlePause={this.handlePause}
           handleGameOver={this.handleGameOver}

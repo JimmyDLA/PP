@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Platform } from 'react-native'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -10,7 +10,7 @@ export const style = StyleSheet.create({
     backgroundColor: 'rgb(230,230,230)',
   },
   matrixContainer: { 
-    height: '42%',
+    height: hp(42),
     width: '100%',
     borderWidth: hp(0.5),
     borderColor: 'black',

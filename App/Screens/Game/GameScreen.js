@@ -22,10 +22,34 @@ import { style } from './GameScreen.style'
 import { Matrix } from '../../Components/organisms/Matrix';
 import { Selection } from '../../Components/organisms/Selection';
 import { Status } from '../../Components/organisms/Status';
+import Sound from 'react-native-sound';
+
 
 class GameScreen extends React.Component {
 
   point = new Animated.ValueXY();
+  track = new Sound('main_track.mp3', Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // loaded successfully
+    console.log('duration in seconds: ' + this.track.getDuration() + 'number of channels: ' + this.track.getNumberOfChannels());
+  
+    setTimeout(() => {
+      // Play the sound with an onEnd callback
+      this.track.play((success) => {
+        if (success) {
+          console.log('successfully finished playing');
+        } else {
+          console.log('playback failed due to audio decoding errors');
+        }
+      });
+  
+      this.track.setNumberOfLoops(-1);
+      
+    }, 4000);
+  });
 
   constructor() {
     super();
@@ -114,6 +138,11 @@ class GameScreen extends React.Component {
     const { aboutToStart } = this.props;
     aboutToStart({ gameAboutToStart: true });
     this.handleGetShapes();
+  }
+
+  componentWillUnmount() {
+    this.track.stop();
+    this.track.release();
   }
 
   points = () => {

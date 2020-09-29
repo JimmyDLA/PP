@@ -13,6 +13,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		180E8F10109AAC0F6C4AE8A5 /* libPods-Precision-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46C2C6D1905A57358D15545F /* libPods-Precision-tvOS.a */; };
+		2088EFBA2522E5190002B700 /* dub.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088EFB92522E5190002B700 /* dub.mp3 */; };
+		2088F0002522FC480002B700 /* main_track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088EFFF2522FC470002B700 /* main_track.mp3 */; };
+		2088F00625230EF70002B700 /* snips.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088F00525230EF70002B700 /* snips.mp3 */; };
 		298566B4182437FDC9416AAA /* libPods-Precision.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDD0398590D8F93705C82ABE /* libPods-Precision.a */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -57,6 +60,9 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Precision/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Precision/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Precision/main.m; sourceTree = "<group>"; };
+		2088EFB92522E5190002B700 /* dub.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = dub.mp3; path = ../../../Downloads/dub.mp3; sourceTree = "<group>"; };
+		2088EFFF2522FC470002B700 /* main_track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = main_track.mp3; path = ../../../Desktop/main_track.mp3; sourceTree = "<group>"; };
+		2088F00525230EF70002B700 /* snips.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = snips.mp3; path = ../../../Desktop/snips.mp3; sourceTree = "<group>"; };
 		262FB68990FABB4B74A57DD9 /* libPods-Precision-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Precision-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* Precision-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Precision-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Precision-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Precision-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -197,6 +203,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				2088F00525230EF70002B700 /* snips.mp3 */,
+				2088EFFF2522FC470002B700 /* main_track.mp3 */,
+				2088EFB92522E5190002B700 /* dub.mp3 */,
 				13B07FAE1A68108700A75B9A /* Precision */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PrecisionTests */,
@@ -363,8 +372,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2088EFBA2522E5190002B700 /* dub.mp3 in Resources */,
+				2088F0002522FC480002B700 /* main_track.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				2088F00625230EF70002B700 /* snips.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

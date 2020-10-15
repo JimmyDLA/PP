@@ -1,4 +1,4 @@
-package com.precision;
+package com.figrd;
 
 import android.app.Application;
 

@@ -13,6 +13,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		180E8F10109AAC0F6C4AE8A5 /* libPods-FIGRD-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 46C2C6D1905A57358D15545F /* libPods-FIGRD-tvOS.a */; };
+		2009FA3E25394E9100711904 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2009FA3D25394E9100711904 /* LaunchScreen.storyboard */; };
 		2088EFBA2522E5190002B700 /* dub.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088EFB92522E5190002B700 /* dub.mp3 */; };
 		2088F0002522FC480002B700 /* main_track.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088EFFF2522FC470002B700 /* main_track.mp3 */; };
 		2088F00625230EF70002B700 /* snips.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2088F00525230EF70002B700 /* snips.mp3 */; };
@@ -60,6 +61,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = FIGRD/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = FIGRD/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FIGRD/main.m; sourceTree = "<group>"; };
+		2009FA3D25394E9100711904 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2088EFB92522E5190002B700 /* dub.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = dub.mp3; path = ../../../Downloads/dub.mp3; sourceTree = "<group>"; };
 		2088EFFF2522FC470002B700 /* main_track.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = main_track.mp3; path = ../../../Desktop/main_track.mp3; sourceTree = "<group>"; };
 		2088F00525230EF70002B700 /* snips.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = snips.mp3; path = ../../../Desktop/snips.mp3; sourceTree = "<group>"; };
@@ -157,8 +159,9 @@
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				2009FA3D25394E9100711904 /* LaunchScreen.storyboard */,
+				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = FIGRD;
@@ -376,6 +379,7 @@
 				2088EFBA2522E5190002B700 /* dub.mp3 in Resources */,
 				2088F0002522FC480002B700 /* main_track.mp3 in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				2009FA3E25394E9100711904 /* LaunchScreen.storyboard in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				2088F00625230EF70002B700 /* snips.mp3 in Resources */,
 			);

@@ -4,7 +4,7 @@ import ApplicationStyles from 'App/Theme/ApplicationStyles'
 
 export const style = StyleSheet.create({
   button: { 
-    backgroundColor: 'rgb(52, 152, 219)',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     height: 50,
@@ -18,12 +18,11 @@ export const style = StyleSheet.create({
     justifyContent: 'space-between',
   },
   container: {
-    ...ApplicationStyles.screen.container,
-    margin: 30,
+    backgroundColor: 'rgb(6,32,57)',
     flex: 1,
     justifyContent: 'center',
   },
-  howTo: {
+  buttonText: {
     fontSize: 16,
   },
   logo: {
@@ -36,12 +35,16 @@ export const style = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  start: {
-    fontSize: 16,
-  },
   title: {
     ...Fonts.style.h2,
     textAlign: 'center',
     marginBottom: 10,
+    color: 'white',
+    marginTop: -150
+  },
+  background: {
+    flex: 1,
+    justifyContent: 'space-around',
+    // alignItems: ''
   },
 })

@@ -24,6 +24,8 @@ import { Selection } from '../../Components/organisms/Selection';
 import { Status } from '../../Components/organisms/Status';
 import Sound from 'react-native-sound';
 
+console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+console.disableYellowBox = true;
 
 class GameScreen extends React.Component {
 
@@ -346,7 +348,7 @@ class GameScreen extends React.Component {
       
       this.setState({ powerUp: newPowerUp })
 
-      setTimeout(() => {
+      setTimeout(() => {        
         const newPowerUp = {
           square: null,
           color: null,

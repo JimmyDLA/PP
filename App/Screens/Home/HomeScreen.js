@@ -11,9 +11,15 @@ import {
 import { setGame } from 'App/Redux/modules/home';
 import { connect } from 'react-redux';
 import { style } from './HomeScreen.style';
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 import SplashScreen from 'react-native-splash-screen'
 import Sound from 'react-native-sound';
 import splash from 'App/Assets/Images/splash.png';
+
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false
+};
 
 class HomeScreen extends React.Component {
 
@@ -51,6 +57,10 @@ class HomeScreen extends React.Component {
   handleHowToPlay = () => {
     this.track.stop();
     this.track.release();
+    // Haptics types: 
+    // "selection", "impactLight", "impactMedium", "impactHeavy", 
+    // "notificationSuccess", "notificationWarning", "notificationError"
+    ReactNativeHapticFeedback.trigger("notificationError", options);
   }
 
   render() {

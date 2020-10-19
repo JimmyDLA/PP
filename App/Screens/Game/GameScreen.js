@@ -23,36 +23,19 @@ import { Matrix } from '../../Components/organisms/Matrix';
 import { Selection } from '../../Components/organisms/Selection';
 import { Status } from '../../Components/organisms/Status';
 import Sound from 'react-native-sound';
+import ReactNativeHapticFeedback from "react-native-haptic-feedback";
 
 console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
 console.disableYellowBox = true;
+const options = {
+  enableVibrateFallback: true,
+  ignoreAndroidSystemSettings: false
+};
 
 class GameScreen extends React.Component {
 
   point = new Animated.ValueXY();
-  // track = new Sound('main_track.mp3', Sound.MAIN_BUNDLE, (error) => {
-  //   if (error) {
-  //     console.log('failed to load the sound', error);
-  //     return;
-  //   }
-  //   // loaded successfully
-  //   console.log('duration in seconds: ' + this.track.getDuration() + 'number of channels: ' + this.track.getNumberOfChannels());
   
-  //   setTimeout(() => {
-  //     // Play the sound with an onEnd callback
-  //     this.track.play((success) => {
-  //       if (success) {
-  //         console.log('successfully finished playing');
-  //       } else {
-  //         console.log('playback failed due to audio decoding errors');
-  //       }
-  //     });
-  
-  //     this.track.setNumberOfLoops(-1);
-      
-  //   }, 4000);
-  // });
-
   constructor() {
     super();
     this.state = {
@@ -175,6 +158,7 @@ class GameScreen extends React.Component {
         ...shapesFound,
         shape.id.toString(),
       ];
+      ReactNativeHapticFeedback.trigger("impactLight", options);
       updateShapesFound(newShapesFound);
 
       //YOU WON!!
@@ -214,13 +198,14 @@ class GameScreen extends React.Component {
                 this.handlePowerUp(color, shape)
               }
             }
+          } else {
+            ReactNativeHapticFeedback.trigger("notificationError", options);
           }
         }
       }
     })
     
-      this.setState({ isGrabbing: false });
-      this.setState({ grabbedShape: {} });
+      this.setState({ isGrabbing: false, grabbedShape: {} });
   }
 
   handleGetShapes = () => {
@@ -331,7 +316,7 @@ class GameScreen extends React.Component {
       this.setState({ powerUp: newPowerUp });
     } else if (powerUp.square === null) {
       const colors = [
-        'rgb(220,20,60)',
+        // 'rgb(220,20,60)',
         'rgb(65,105,225)',
         'rgb(0,100,0)',
         'rgb(102,51,153)',
@@ -476,7 +461,6 @@ class GameScreen extends React.Component {
 
     this.handleLightUpInterval();
 
-    console.log('render')
     return (
       <View style={style.container}>
         {isGrabbing && (

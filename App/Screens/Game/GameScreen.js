@@ -199,6 +199,9 @@ class GameScreen extends React.Component {
               }
             }
           } else {
+            // Haptics types: 
+            // "selection", "impactLight", "impactMedium", "impactHeavy", 
+            // "notificationSuccess", "notificationWarning", "notificationError"
             ReactNativeHapticFeedback.trigger("notificationError", options);
           }
         }
@@ -488,7 +491,7 @@ class GameScreen extends React.Component {
           timeID={timeID}
           isFrozen={frozen}
           isAddTime={addTime}
-          gamePaused={true}
+          gamePaused={gamePaused}
           showPowerupTime={powerupTime}
           handlePause={this.handlePause}
           handleGameOver={this.handleGameOver}

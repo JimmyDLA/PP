@@ -20,6 +20,15 @@ const options = {
   enableVibrateFallback: true,
   ignoreAndroidSystemSettings: false
 };
+const hapticsType = [
+  "selection", 
+  "impactLight", 
+  "impactMedium", 
+  "impactHeavy", 
+  "notificationSuccess", 
+  "notificationWarning", 
+  "notificationError",
+];
 
 class HomeScreen extends React.Component {
 
@@ -57,10 +66,19 @@ class HomeScreen extends React.Component {
   handleHowToPlay = () => {
     this.track.stop();
     this.track.release();
+
     // Haptics types: 
     // "selection", "impactLight", "impactMedium", "impactHeavy", 
     // "notificationSuccess", "notificationWarning", "notificationError"
-    ReactNativeHapticFeedback.trigger("notificationError", options);
+    ReactNativeHapticFeedback.trigger("impactHeavy", options);
+    
+    // setInterval(() => {
+    //   ReactNativeHapticFeedback.trigger("impactHeavy", options);
+    // }, 50);
+  }
+
+  handleHaptic = hapticType => {
+    ReactNativeHapticFeedback.trigger(hapticType, options);
   }
 
   render() {
@@ -81,6 +99,11 @@ class HomeScreen extends React.Component {
             <TouchableOpacity onPress={this.handleHowToPlay} style={style.button}>
               <Text style={style.buttonText}>How To Play</Text>
             </TouchableOpacity>
+            {/* {hapticsType.map(haptic => (
+              <TouchableOpacity onPress={() => this.handleHaptic(haptic)} style={style.button}>
+                <Text style={style.buttonText}>{haptic}</Text>
+              </TouchableOpacity>
+            ))} */}
           </View>
         </ImageBackground>
       </View>
